@@ -1,0 +1,17 @@
+.container {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
+  .userList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .userItem {
+    background: #f4f4f4;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
