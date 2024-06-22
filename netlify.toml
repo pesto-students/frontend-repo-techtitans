@@ -1,0 +1,8 @@
+[build]
+  command = "cd doc_checker && npm install react-scripts && npm run build"
+  publish = "doc_checker/build"  # Adjust this if the publish directory is different
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
