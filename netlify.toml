@@ -1,5 +1,5 @@
 [build]
-  command = "cd doc_checker && npm install react-scripts && npm run build"
+  command = "cd doc_checker && npm install --legacy-peer-deps && npm install react-scripts && npm run build"
   publish = "doc_checker/build"  # Adjust this if the publish directory is different
 
 [[redirects]]
