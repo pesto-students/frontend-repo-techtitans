@@ -271,7 +271,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
                         overflow: 'auto',
                     }}
                 >
-                    <Typography variant="h5" ml={7} mt={2} mb={2} sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" ml={5} mt={2} mb={2} sx={{ fontWeight: 'bold' }}>
                         {highlightData?.attachmentName}
                     </Typography>
                     <Viewer fileUrl={fileUrl} plugins={[highlightPluginInstance]} />

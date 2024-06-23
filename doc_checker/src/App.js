@@ -14,30 +14,29 @@ import DocumentReview from './Pages/DocumentReview';
 import CustomerHomePage from './Pages/CustomerHomePage';
 import LandingPage from './Pages/LandingPage';
 import UploadDocument from './Pages/UploadDocument';
-import ExpertHomePage from './Pages/ExpertHomePage'
-import AdminHomePage from './Pages/AdminHomePage'
-import InvalidAccess from './Pages/InvalidAccess'
-import Logout from './Pages/Logout'
-import SideBar from './components/SideBar'
+import ExpertHomePage from './Pages/ExpertHomePage';
+import AdminHomePage from './Pages/AdminHomePage';
+import InvalidAccess from './Pages/InvalidAccess';
+import Logout from './Pages/Logout';
+import SideBar from './components/SideBar';
 import ProtectedRoutes from './components/ProtectedRoutes';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import Settings from './Pages/Settings';
 import ForgotPassword from './Pages/ForgotPassword';
 
-const useStyles = makeStyles((theme) => ({
-  mainContent: {
-    marginLeft: 240, 
-    padding: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 200, 
-    },
+const MainContent = styled('div')(({ theme, shouldShowSidebar }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  marginLeft: shouldShowSidebar ? 220 : 0, // Sidebar width or 0
+  [theme.breakpoints.down('sm')]: {
+    marginLeft: shouldShowSidebar ? 220 : 0,
   },
 }));
 
-const MainContent = ({ children }) => {
-  const classes = useStyles();
-  return <div className={classes.mainContent}>{children}</div>;
-};
+const LayoutContainer = styled('div')({
+  display: 'flex',
+  width: '100%',
+});
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -45,60 +44,36 @@ const Layout = ({ children }) => {
   const shouldShowSidebar = !noSidebarPaths.includes(location.pathname);
 
   return (
-    <>
+    <LayoutContainer>
       {shouldShowSidebar && <SideBar />}
-      {shouldShowSidebar ? <MainContent>{children}</MainContent> : children}
-    </>
+      <MainContent shouldShowSidebar={shouldShowSidebar}>{children}</MainContent>
+    </LayoutContainer>
   );
 };
 
 const App = () => {
   return (
-    <>
-      <Router>
-       <Layout>
-          
-
-          
-          <Routes>
-            <Route exact path="/" element={<LandingPage />} />
-
-            <Route path="/login" element={<Login />} />
-
-            <Route exact path="/signup-as" element={<SignUpAsPage />} />
-
-            <Route path="/signup" element={<SignUp />} />
-
-            <Route path="/expert/signup" element={<ExpertSignUp />} />
-            
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-
-            <Route path="/document-review" element={<ProtectedRoutes Component={<DocumentReview />} allowCustomer={true} allowExpert={true} allowAdmin={false}/>} />
-
-            <Route path="/upload-document" element={<ProtectedRoutes Component={<UploadDocument />} allowCustomer={true} allowExpert={false} allowAdmin={false}/>} />
-
-            <Route path="/customer-home" element={<ProtectedRoutes Component={<CustomerHomePage />} allowCustomer={true} allowExpert={false} allowAdmin={false}/>} />
-
-            <Route path="/expert-home" element={<ProtectedRoutes Component={<ExpertHomePage />} allowCustomer={false} allowExpert={true} allowAdmin={false}/>} />
-
-            <Route path="/admin-home" element={<ProtectedRoutes Component={<AdminHomePage />} allowCustomer={false} allowExpert={false} allowAdmin={true}/>} />
-            
-            <Route path="/settings" element={<ProtectedRoutes Component={<Settings />} allowCustomer={true} allowExpert={true} allowAdmin={true}/>} />
-
-            <Route path="/invalid-access" element={<InvalidAccess />} />
-            
-            
-            <Route path="/logout" element={<Logout />} />
-
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          
-        </Layout>
-      </Router>
-
-
-
-    </>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route exact path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route exact path="/signup-as" element={<SignUpAsPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/expert/signup" element={<ExpertSignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/document-review" element={<ProtectedRoutes Component={<DocumentReview />} allowCustomer={true} allowExpert={true} allowAdmin={false} />} />
+          <Route path="/upload-document" element={<ProtectedRoutes Component={<UploadDocument />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
+          <Route path="/customer-home" element={<ProtectedRoutes Component={<CustomerHomePage />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
+          <Route path="/expert-home" element={<ProtectedRoutes Component={<ExpertHomePage />} allowCustomer={false} allowExpert={true} allowAdmin={false} />} />
+          <Route path="/admin-home" element={<ProtectedRoutes Component={<AdminHomePage />} allowCustomer={false} allowExpert={false} allowAdmin={true} />} />
+          <Route path="/settings" element={<ProtectedRoutes Component={<Settings />} allowCustomer={true} allowExpert={true} allowAdmin={true} />} />
+          <Route path="/invalid-access" element={<InvalidAccess />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 };
 

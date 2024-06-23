@@ -87,7 +87,7 @@ const SignUp = () => {
 
     return (
         <div>
-            <Box sx={{ height: '92vh', marginTop: "17px" }} >
+            <Box sx={{ height: '100vh' }} >
 
                 <Grid container spacing={2}>
                     <Grid item xs={6} className='parentDivFullHeight'>

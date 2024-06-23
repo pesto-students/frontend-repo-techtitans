@@ -44,8 +44,8 @@ function DocumentReview() {
                 <div
                     style={{
                         height: '680px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
+                        // marginLeft: 'auto',
+                        // marginRight: 'auto'
                     }}
                 >
                     {
