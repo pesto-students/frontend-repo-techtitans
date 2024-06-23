@@ -1,25 +1,22 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@mui/material/Avatar';
+import { styled } from '@mui/system';
 
-const useStyles = makeStyles(() => ({
-    avatar: {
-        width: '10vw',
-        height: '10vw',
-    },
-    img: {
-        width: '10vw',
-        height: '10vw',
-        borderRadius: '50%',
-        objectFit: 'cover',
-    },
-}));
+const StyledAvatar = styled(Avatar)({
+    width: '10vw',
+    height: '10vw',
+});
+
+const StyledImage = styled('img')({
+    width: '10vw',
+    height: '10vw',
+    borderRadius: '50%',
+    objectFit: 'cover',
+});
 
 function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
-    const classes = useStyles();
-
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
@@ -42,16 +39,14 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
                 height="100%"
             >
                 {selectedImage ? (
-                    <Box
-                        component="img"
+                    <StyledImage
                         src={selectedImage}
                         alt={user?.firstname}
-                        className={classes.img}
                     />
                 ) : (
-                    <Avatar className={classes.avatar}>
+                    <StyledAvatar>
                         {user?.firstname?.charAt(0).toUpperCase()}
-                    </Avatar>
+                    </StyledAvatar>
                 )}
                 <input
                     accept="image/*"
@@ -61,7 +56,7 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
                     onChange={handleImageChange}
                 />
                 <label htmlFor="contained-button-file">
-                    <Button variant="contained" component="span" sx={{marginTop: '2vh'}}>
+                    <Button variant="contained" component="span" sx={{ marginTop: '2vh' }}>
                         Change Profile Picture
                     </Button>
                 </label>
