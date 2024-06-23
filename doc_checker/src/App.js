@@ -61,7 +61,7 @@ const App = () => {
           <Route exact path="/signup-as" element={<SignUpAsPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/expert/signup" element={<ExpertSignUp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/document-review" element={<ProtectedRoutes Component={<DocumentReview />} allowCustomer={true} allowExpert={true} allowAdmin={false} />} />
           <Route path="/upload-document" element={<ProtectedRoutes Component={<UploadDocument />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
           <Route path="/customer-home" element={<ProtectedRoutes Component={<CustomerHomePage />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
