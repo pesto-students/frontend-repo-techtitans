@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {  useSelector } from 'react-redux';
 
-axios.defaults.baseURL = 'http://localhost:8090/api';
+axios.defaults.baseURL = 'https://backend-repo-techtitans-1.onrender.com/api';
 
 const useAxios = ({
     url: initialUrl,

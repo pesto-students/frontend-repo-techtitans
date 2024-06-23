@@ -71,6 +71,7 @@ const ExpertSignUp = () => {
         if (data && url === '/domains') {
             setDomains(data)
         }
+        // eslint-disable-next-line
     }, [data])
 
     return (
@@ -93,28 +94,34 @@ const ExpertSignUp = () => {
                                 {error && <Alert severity="error">{error.message}</Alert>}
                             </Stack>
                             <Stack direction="column" justifyContent="center" alignItems="center">
-                                <Container maxWidth="sm">
-                                    {
-                                        loading ? <CircularProgress color='secondary' size={24} /> :
-                                            <SignUpStepper userData={userData} setUserData={setUserData} signUp={handlePostData}
-                                                showModal={showModal} modalTitle={modalTitle} modalActions={modalActions}
-                                                profile={profile} setProfileData={setProfileData}
-                                                selectedDomains={selectedDomains} setSelectedDomains={setSelectedDomains}
-                                                selectedIndustries={selectedIndustries} setSelectedIndustries={setSelectedIndustries}
-                                                industries={industries} domains={domains}
-                                            />
-                                    }
 
-                                </Container>
-                                <Typography>Already a member?
-                                    <Button
-                                        variant="text"
-                                        onClick={() => navigate('/login')}
-                                    >
-                                        Login
-                                    </Button>
+                                {
+                                    loading ? <CircularProgress color='secondary' size={100} /> :
+                                        <>
+                                            <Container maxWidth="sm">
+                                                <SignUpStepper userData={userData} setUserData={setUserData} signUp={handlePostData}
+                                                    showModal={showModal} modalTitle={modalTitle} modalActions={modalActions}
+                                                    profile={profile} setProfileData={setProfileData}
+                                                    selectedDomains={selectedDomains} setSelectedDomains={setSelectedDomains}
+                                                    selectedIndustries={selectedIndustries} setSelectedIndustries={setSelectedIndustries}
+                                                    industries={industries} domains={domains}
+                                                />
+                                            </Container>
+                                            <Typography>Already a member?
+                                                <Button
+                                                    variant="text"
+                                                    onClick={() => navigate('/login')}
+                                                >
+                                                    Login
+                                                </Button>
 
-                                </Typography>
+                                            </Typography>
+                                        </>
+
+                                }
+
+
+
                             </Stack>
                         </Stack>
                     </Grid>

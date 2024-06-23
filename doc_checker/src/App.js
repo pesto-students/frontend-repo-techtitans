@@ -22,7 +22,6 @@ import SideBar from './components/SideBar';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import { styled } from '@mui/system';
 import Settings from './Pages/Settings';
-import ForgotPassword from './Pages/ForgotPassword';
 
 const MainContent = styled('div')(({ theme, shouldShowSidebar }) => ({
   flexGrow: 1,
@@ -61,7 +60,6 @@ const App = () => {
           <Route exact path="/signup-as" element={<SignUpAsPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/expert/signup" element={<ExpertSignUp />} />
-          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/document-review" element={<ProtectedRoutes Component={<DocumentReview />} allowCustomer={true} allowExpert={true} allowAdmin={false} />} />
           <Route path="/upload-document" element={<ProtectedRoutes Component={<UploadDocument />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
           <Route path="/customer-home" element={<ProtectedRoutes Component={<CustomerHomePage />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />

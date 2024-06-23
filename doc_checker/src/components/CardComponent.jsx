@@ -1,13 +1,12 @@
 import * as React from 'react';
 
 import Card from '@mui/material/Card';
-import { CardActionArea, CardActions, Button } from '@mui/material';
+import { CardActionArea} from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import { red } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ROLES, REVIEW_STATUS } from '../Constants';
 

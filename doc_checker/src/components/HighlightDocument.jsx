@@ -85,7 +85,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
             openModal()
 
         }
-
+// eslint-disable-next-line
     }, [loading, error])
 
     const confirmReviewSubmission = () => {

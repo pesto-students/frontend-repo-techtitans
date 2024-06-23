@@ -43,7 +43,7 @@ function SignUpStepper({ userData, setUserData, signUp,
             ...prevUserData,
             ...{ resume: data?.url },
         }))
-    }, [data])
+    }, [data, setProfileData])
 
     const handleDomainChange = (event) => {
         setSelectedDomains(event.target.value);

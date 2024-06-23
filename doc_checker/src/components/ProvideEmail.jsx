@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, Button, Container, Typography, TextField } from '@mui/material';
+import { Stack, Button, Typography, TextField } from '@mui/material';
 
 function ProvideEmail({ email, setEmail, handleSubmitEmail }) {
     return (
