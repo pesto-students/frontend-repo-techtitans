@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import ChangeProfilePicture from '../components/ChangeProfilePicture';
 import ChangeProfileSetting from '../components/ChangeProfileSetting';
-import ChangeLoginSetting from '../components/ChangeLoginSetting';
 import { useSelector } from 'react-redux';
 import useAxios from '../hooks/UseAxios.hook'
 import { CircularProgress } from '@mui/material';
@@ -26,7 +25,7 @@ function Settings() {
             sessionStorage.setItem('userInfo', JSON.stringify({accessToken: user.accessToken, ...data.data}))
             dispatch(setUser({accessToken : user.accessToken, ...data.data}))
         }
-    }, [data])
+    }, [data, dispatch, user.accessToken])
 
     return (
         <Box display="flex" flexDirection="column" height="90vh" ml={5}>
@@ -64,9 +63,6 @@ function Settings() {
                             }
 
                         </Grid>
-                        {/* <Grid item>
-                            <ChangeLoginSetting />
-                        </Grid> */}
                     </Grid>
                 </Box>
             </Box>

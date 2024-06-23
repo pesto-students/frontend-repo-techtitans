@@ -12,7 +12,6 @@ import { CircularProgress } from '@mui/material';
 
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { useNavigate } from "react-router-dom";
 import useAxios from '../hooks/UseAxios.hook'
 import { ACTIVATION_STATUS } from '../Constants'
 import AdminRejectionModal from '../components/AdminRejectionModal';
@@ -23,7 +22,6 @@ const columns = ['Expert Name', 'Profile Summary', `Linkedin URL`, 'Industry', '
 function HomePage() {
     const [rows, setRows] = React.useState([])
     const [searchQuery, setSearchQuery] = React.useState('');
-    const navigate = useNavigate();
     const [showModal, setShowModal] = React.useState(false)
     const [modalTitle, setModalTitle] = React.useState('')
     const [modalContent, setModalContent] = React.useState()
@@ -64,7 +62,7 @@ function HomePage() {
         if (url === '/users') {
             setRows(data?.data)
         }
-    }, [data])
+    }, [data, url])
 
 
 
@@ -133,6 +131,7 @@ function HomePage() {
         setIsIframe(true)
         setModalContent(<>
             <iframe
+                title='resume'
                 src={resume}
                 width="100%"
                 height="700px"
@@ -202,8 +201,8 @@ function HomePage() {
             setModalTitle()
 
         }
-
-    }, [loading, error, data])
+// eslint-disable-next-line
+    }, [loading, error, data, url])
 
     const confirmExpertStatus = (row, status) => {
         closeRejectionModal()

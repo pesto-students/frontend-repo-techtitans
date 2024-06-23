@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import uploadPDFImg from '../images/uploadPDF_img.png'
 import Box from '@mui/material/Box';
-import { Typography, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 
 function UploadPDF({ setDocument, document,
@@ -14,6 +14,7 @@ function UploadPDF({ setDocument, document,
 
     useEffect(() => {
         setDocument({ ...document, ...data })
+        // eslint-disable-next-line
     }, [data])
 
     const handleImageClick = () => {

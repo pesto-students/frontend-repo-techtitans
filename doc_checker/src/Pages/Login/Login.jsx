@@ -20,8 +20,8 @@ const Login = () => {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [modalActions, setModalActions] = React.useState()
-    const [modalTitle, setModalTitle] = React.useState('')
+    const [modalActions] = React.useState()
+    const [modalTitle] = React.useState('')
     const { setMethod, setBody, data, error } = useAxios({
         url: '/auth/login',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +58,7 @@ const Login = () => {
             }
         }
 
-    }, [data])
+    }, [data, dispatch, navigate])
 
     return (
         <div>

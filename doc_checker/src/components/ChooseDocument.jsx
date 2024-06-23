@@ -3,7 +3,6 @@ import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { DOCUMENT_TYPES } from '../Constants'
 
 function ChooseDocument({ docType, setDocType, documentCategories, clearDetails }) {
     const selectDocumentCategory = (doc) => {

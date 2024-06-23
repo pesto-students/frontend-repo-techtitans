@@ -11,9 +11,6 @@ const userSlice = createSlice({
         setUser: (state, action) => {
             state.user = action.payload
         },
-        // getUser: (state, action) => {
-        //     return state.user
-        // }
     }
 })
 
