@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import image from '../../images/landing_page_img.png'
@@ -31,10 +31,12 @@ const SignUp = () => {
         setShowModal(false)
     }
 
-    const navigateToLogin = () => {
+    const navigateToLogin = useCallback(() => {
         setShowModal(false)
         navigate('/login')
-    }
+      }, [setShowModal, navigate]);
+
+
 
     const handlePostData = () => {
         setBody(userData)     
@@ -66,7 +68,7 @@ const SignUp = () => {
             setShowModal(true)
         }
         
-    }, [data]);
+    }, [data, navigateToLogin]);
 
     useEffect(() => {
         if (error && Object.keys(error).length) {

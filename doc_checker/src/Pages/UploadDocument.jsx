@@ -93,6 +93,7 @@ function UploadDocument() {
         if(data && url === '/domains') {
             setDocumentCategory(data)
         }
+        // eslint-disable-next-line
     }, [data])
 
     const handleBack = () => {

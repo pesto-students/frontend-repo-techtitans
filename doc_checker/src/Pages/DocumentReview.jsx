@@ -3,7 +3,6 @@ import HighlightDocument from '../components/HighlightDocument'
 import { Worker } from '@react-pdf-viewer/core';
 import Typography from '@mui/material/Typography';
 import ErrorBoundary from '../components/ErrorBoundary';
-import DisplayNotesSidebarExample from '../components/DisplayNotesSidebarOriginal'
 import { useLocation } from 'react-router-dom';
 import useAxios from '../hooks/UseAxios.hook'
 import { CircularProgress, Button, Box } from '@mui/material';
@@ -14,7 +13,7 @@ function DocumentReview() {
     const location = useLocation();
     const { docId, expertEmailId } = location.state || {};
     const [pdf, setPdf] = useState("")
-    const { data, error, loading } = useAxios({
+    const { data, loading } = useAxios({
         url: `/review/${docId}`,
         autoFetch: true
     });

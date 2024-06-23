@@ -6,7 +6,7 @@ function SubmitPDF() {
   return (
     <>
         <Box mt={10} mb={10} sx={{ display: 'flex', justifyContent: 'center'}}>
-            <img src={img}/>
+            <img src={img} alt={"Resume"}/>
         </Box>
         <Typography variant='h6' sx={{textAlign: 'center'}}>
             Thank you for submitting your document!
