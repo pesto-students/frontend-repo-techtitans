@@ -31,7 +31,7 @@ function DocumentReview() {
 
     return (
         <>
-            <Box display="flex" justifyContent="space-between" width="100%" alignItems="center">
+            <Box display="flex" justifyContent="space-between" width="100%" alignItems="center" ml={5}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Document Review
                 </Typography>
@@ -44,8 +44,8 @@ function DocumentReview() {
                 <div
                     style={{
                         height: '680px',
-                        // marginLeft: 'auto',
-                        // marginRight: 'auto'
+                        marginLeft: 'auto',
+                        marginRight: 'auto'
                     }}
                 >
                     {

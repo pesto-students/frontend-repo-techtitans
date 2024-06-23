@@ -20,9 +20,9 @@ const theme = createTheme({
 });
 
 const Root = styled('div')({
-  minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
+  minHeight: '100vh', // Ensure the root container takes up the full viewport height
 });
 
 const CustomAppBar = styled(AppBar)({
@@ -38,7 +38,7 @@ const Logo = styled('img')({
 
 const LogoText = styled(Typography)({
   flexGrow: 1,
-  fontSize: '48px !important',
+  fontSize: '32px !important', // Decreased font size
   fontWeight: 'bold !important',
 });
 
@@ -48,7 +48,7 @@ const HomeContainer = styled(Container)({
   justifyContent: 'center',
   textAlign: 'left',
   padding: theme.spacing(4),
-  minHeight: '400px',
+  minHeight: '100vh', // Ensure home section takes up full viewport height
 });
 
 const HomeText = styled(Box)({
@@ -66,6 +66,7 @@ const FeaturesSection = styled(Box)({
   padding: theme.spacing(4),
   backgroundColor: '#f5f5f5',
   textAlign: 'center',
+  minHeight: '100vh', // Ensure features section takes up full viewport height
 });
 
 const FeatureItem = styled(Box)({
@@ -83,6 +84,7 @@ const AboutSection = styled(Container)({
   padding: theme.spacing(4),
   backgroundColor: '#fff',
   textAlign: 'center',
+  minHeight: '100vh', // Ensure about section takes up full viewport height
 });
 
 const AboutImage = styled('img')({
@@ -99,7 +101,8 @@ const Buttons = styled(Box)({
 
 const Tabs = styled(Button)({
   fontWeight: 'bold !important',
-  fontSize: '24px !important',
+  fontSize: '16px !important', // Decreased font size
+  marginLeft: theme.spacing(2),
 });
 
 function LandingPage() {
@@ -107,6 +110,15 @@ function LandingPage() {
   const homeRef = useRef();
   const featureRef = useRef();
   const aboutRef = useRef();
+
+  const scrollToRef = (ref) => {
+    if (ref && ref.current) {
+      window.scrollTo({
+        top: ref.current.offsetTop - 80, // Adjusted for the height of the AppBar
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,31 +132,19 @@ function LandingPage() {
             </LogoText>
             <Tabs 
               color="inherit"
-              onClick={() => {
-                homeRef.current?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }}
+              onClick={() => scrollToRef(homeRef)}
             >
               Home
             </Tabs>
             <Tabs 
               color="inherit"
-              onClick={() => {
-                featureRef.current?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }}
+              onClick={() => scrollToRef(featureRef)}
             >
               Features
             </Tabs>
             <Tabs 
               color="inherit"
-              onClick={() => {
-                aboutRef.current?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }}
+              onClick={() => scrollToRef(aboutRef)}
             >
               About us
             </Tabs>

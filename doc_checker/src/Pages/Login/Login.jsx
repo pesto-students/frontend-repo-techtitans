@@ -107,7 +107,7 @@ const Login = () => {
                                     </Button>
 
                                 </Typography>
-                                <Typography>
+                                {/* <Typography>
                                     <Button
                                         variant="text"
                                         onClick={() => navigate('/forgot-password')}
@@ -115,7 +115,7 @@ const Login = () => {
                                         Forgot Password?
                                     </Button>
 
-                                </Typography>
+                                </Typography> */}
                             </Stack>
 
 
