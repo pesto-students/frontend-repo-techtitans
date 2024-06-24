@@ -37,9 +37,12 @@ const ExpertSignUp = () => {
         setBody({
             ...userData,
             profile: {
-                ...profile,
                 domainOfExpertise: selectedDomains,
                 industry: selectedIndustries,
+                linkedInUrl: profile.linkedInUrl,
+                profileSummary: profile.profileSummary,
+                resume: profile.resume,
+                yearsOfExperience: profile.yearsOfExperience
             }
         });
     };

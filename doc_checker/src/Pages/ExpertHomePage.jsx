@@ -53,7 +53,7 @@ function HomePage() {
   }
 
   const loadPdfwithReview = (docId) => {
-    navigate('/document-review', { state: { docId} });
+    navigate('/document-review', { state: { docId } });
   }
 
   const handleSearchChange = (event) => {
@@ -75,7 +75,7 @@ function HomePage() {
             {row.docId}
           </TableCell>
           <TableCell>
-            {row.userDetails?.firstname +" "+ row.userDetails?.lastname}
+            {row.userDetails?.firstname + " " + row.userDetails?.lastname}
           </TableCell>
           <TableCell ><Button sx={{ textTransform: 'none' }} onClick={() => showDocumentDescription(row)}>{row?.attachmentName}</Button></TableCell>
           <TableCell >{row.docType}</TableCell>
@@ -93,10 +93,13 @@ function HomePage() {
         </TableRow>
       )) :
         <TableRow>
-          <TableCell colSpan={7}>
-            <Alert severity="error">{error?.response?.data || "No data to display."}</Alert>
+          <TableCell colSpan={7} >
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <Alert severity="info">
+                {error?.response?.data || "No data to display."}
+              </Alert>
+            </Box>
           </TableCell>
-
         </TableRow>
 
     )
@@ -109,7 +112,11 @@ function HomePage() {
       </Typography>
       <Box m={5} >
         {
-          loading ? <CircularProgress color='secondary' size={100} /> :
+          loading ?
+            <Box display="flex" justifyContent="center" width="100%">
+              <CircularProgress color='secondary' size={100} />
+            </Box>
+            :
             <>
               <Box component="section" p={3} sx={{ border: '1px solid rgb(224, 224, 224)' }} >
                 <Stack direction="row" justifyContent="space-between">

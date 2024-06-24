@@ -22,13 +22,13 @@ function Settings() {
 
     useEffect(() => {
         if (data && Object.keys(data).length) {
-            sessionStorage.setItem('userInfo', JSON.stringify({accessToken: user.accessToken, ...data.data}))
-            dispatch(setUser({accessToken : user.accessToken, ...data.data}))
+            sessionStorage.setItem('userInfo', JSON.stringify({ accessToken: user.accessToken, ...data.data }))
+            dispatch(setUser({ accessToken: user.accessToken, ...data.data }))
         }
     }, [data, dispatch, user.accessToken])
 
     return (
-        <Box display="flex" flexDirection="column" height="90vh" ml={5}>
+        <Box display="flex" flexDirection="column" height="80vh" ml={5}>
             <Typography variant="h4" ml={5} mt={2} mb={2} sx={{ fontWeight: 'bold' }}>
                 Settings
             </Typography>
@@ -36,36 +36,32 @@ function Settings() {
                 <Alert severity="error">{error?.response?.data || error?.message}</Alert> :
                 data && <Alert severity="success">{data?.message}</Alert>
             }
-            <Box display="flex" flexGrow={1} overflow="hidden" sx={{ border: '1px solid #E4E6EA' }}>
+            {
+                loading ?
+                    <Box display="flex" justifyContent="center" width="100%" >
+                        <CircularProgress color='secondary' size={100} />
+                    </Box>
+                    :
+                    <Box display="flex" flexGrow={1} overflow="hidden" sx={{ border: '1px solid #E4E6EA' }}>
 
-                {
-                    loading ?
-                        <Box display="flex" justifyContent="center" width="100%">
-                            <CircularProgress color='secondary' size={100} />
-                        </Box> :
                         <ChangeProfilePicture selectedImage={selectedImage} setSelectedImage={setSelectedImage}
                             user={user} data={data} />
-                }
-
-                <Box
-                    component="section"
-                    sx={{ flexGrow: 1, overflowY: 'auto', padding: 5 }}
-                >
-                    <Grid container spacing={4} direction="column">
-                        <Grid item>
-                            {
-                                loading ?
-                                    <Box display="flex" justifyContent="center" width="100%">
-                                        <CircularProgress color='secondary' size={100} />
-                                    </Box> :
+                        <Box
+                            component="section"
+                            sx={{ flexGrow: 1, overflowY: 'auto', padding: 5 }}
+                        >
+                            <Grid container spacing={4} direction="column">
+                                <Grid item>
                                     <ChangeProfileSetting user={user} selectedImage={selectedImage}
                                         setUrl={setUrl} setBody={setBody} setMethod={setMethod} />
-                            }
+                                </Grid>
+                            </Grid>
+                        </Box>
 
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Box>
+
+                    </Box>
+            }
+
         </Box>
     );
 }

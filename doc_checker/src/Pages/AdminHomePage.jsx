@@ -46,7 +46,7 @@ function HomePage() {
         setRejectionModal(false)
         setRejectionReason("")
     }
- 
+
     const openModal = () => {
         setShowModal(true)
     }
@@ -103,12 +103,31 @@ function HomePage() {
 
     const displayProfileSummary = (row) => {
         setModalContent(<>
-            <div>
-                <b>Experience: </b> {row.profile?.yearsOfExperience}
-            </div>
-            <div>
-                {row.profile?.profileSummary}
-            </div>
+            <Box sx={{ marginBottom: 2 }}>
+                <Typography variant="subtitle1">
+                    <b>Experience:</b> {row.profile?.yearsOfExperience}
+                </Typography>
+            </Box>
+            {
+                row.profile?.linkedInUrl &&
+                <Box sx={{ marginBottom: 2 }}>
+                    <Typography variant="subtitle1">
+                        <b>LinkedIn URL:</b> <a href={row.profile?.linkedInUrl} target="_blank" rel="noopener noreferrer">{row.profile?.linkedInUrl}</a>
+                    </Typography>
+                </Box>
+            }
+
+            <Box sx={{ marginBottom: 2 }}>
+                <Typography variant="subtitle1">
+                    <b>Summary:</b> {row.profile?.profileSummary}
+                </Typography>
+            </Box>
+            <Box sx={{ marginBottom: 2 }}>
+                <Typography variant="subtitle1">
+                    <b>Industry:</b> {row.profile?.industry.join(', ')}
+                </Typography>
+            </Box>
+
         </>)
         setModalActions(<>
             <Stack direction="row" sx={{ margin: 'auto' }}>
@@ -164,7 +183,7 @@ function HomePage() {
         setAllExpertsTab(true)
         setApprovedExpertsTab(false)
         setPendingExpertsTab(false)
-        
+
         closeModal()
         closeRejectionModal()
     }
@@ -201,7 +220,7 @@ function HomePage() {
             setModalTitle()
 
         }
-// eslint-disable-next-line
+        // eslint-disable-next-line
     }, [loading, error, data, url])
 
     const confirmExpertStatus = (row, status) => {
@@ -244,7 +263,7 @@ function HomePage() {
             </>)
         }
         if (status === "Reject") {
-            
+
             setRejectedUser({
                 row,
                 status,
@@ -270,9 +289,13 @@ function HomePage() {
                             View Details
                         </Button>
                     </TableCell>
-                    <TableCell >
-                        <Button onClick={() => openLinkedIn(row.profile?.linkedInUrl)}>{row.username}</Button>
-                    </TableCell>
+                    {
+                        row.profile?.linkedInUrl ?
+                            <TableCell >
+                                <Button onClick={() => openLinkedIn(row.profile?.linkedInUrl)}>{row.username}</Button>
+                            </TableCell> : <TableCell>NIL</TableCell>
+                    }
+
 
 
                     <TableCell>{row.profile?.industry.join(',')}</TableCell>
@@ -307,15 +330,17 @@ function HomePage() {
 
                                 </TableCell>
                             </>
-                    }      
+                    }
                 </TableRow>
             )) :
                 <TableRow>
-                    <TableCell colSpan={7}>
-                        <Alert severity="error">{error?.response?.data || "No data to display."}</Alert>
+                    <TableCell colSpan={7} >
+                        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                            <Alert severity="info">
+                                {error?.response?.data || "No data to display."}
+                            </Alert>
+                        </Box>
                     </TableCell>
-
-
                 </TableRow>
         )
     }
@@ -370,7 +395,11 @@ function HomePage() {
                         </Stack>
                     </Box>
                     {
-                        loading && url === '/users' ? <CircularProgress color='secondary' size={100} /> :
+                        loading && url === '/users' ?
+                            <Box display="flex" justifyContent="center" width="100%">
+                                <CircularProgress color='secondary' size={100} />
+                            </Box>
+                            :
                             <BasicTable rows={rows} columns={columns} populateRows={populateRows} />
                     }
                 </Box>

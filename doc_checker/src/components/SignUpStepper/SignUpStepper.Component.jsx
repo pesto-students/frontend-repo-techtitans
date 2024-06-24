@@ -2,27 +2,43 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Button, Stepper, Step, StepLabel, Typography, Box, MenuItem, Select, InputLabel, FormControl, Chip, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
-
 import useAxios from '../../hooks/UseAxios.hook'
 import Alert from '@mui/material/Alert';
 
-
-
-function SignUpStepper({ userData, setUserData, signUp,
-    profile, setProfileData, selectedDomains,
-    selectedIndustries, setSelectedDomains,
+function SignUpStepper({
+    userData,
+    setUserData,
+    signUp,
+    profile,
+    setProfileData,
+    selectedDomains,
+    selectedIndustries,
+    setSelectedDomains,
     setSelectedIndustries,
-    domains, industries }) {
+    domains,
+    industries
+}) {
     const fileInputRef = React.useRef(null);
     const [activeStep, setActiveStep] = useState(0);
     const [passwordsMatch, setPasswordsMatch] = useState(false);
-    const [docName, setDocName] = React.useState("")
-    const steps = ['Login info', 'Personel Info'];
-    const { data, error, loading, setBody, setHeaders, url } = useAxios({
+    const steps = ['Login info', 'Personal Info'];
+    const [validationErrors, setValidationErrors] = useState({});
+    const { data, error, loading, setBody, setHeaders } = useAxios({
         url: '/file/upload',
         method: 'POST',
         autoFetch: false
     });
+
+    useEffect(() => {
+        if (data && Object.keys(data).length) {
+            setProfileData((prevUserData) => ({
+                ...prevUserData,
+                ...{ resume: data?.url },
+            }))
+        }
+    }
+        // eslint-disable-next-line
+        , [data])
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -32,30 +48,9 @@ function SignUpStepper({ userData, setUserData, signUp,
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-
     const isPasswordMatch = (val) => {
         return userData.password === val;
     }
-
-    useEffect(() => {
-        if(url === '/file/upload') {
-            setProfileData((prevUserData) => ({
-                ...prevUserData,
-                ...{ resume: data?.url },
-            }))
-        }
-       
-    }, [data, setProfileData, url])
-
-    const handleDomainChange = (event) => {
-        setSelectedDomains(event.target.value);
-        handleProfileChange(event);
-    };
-
-    const handleIndustryChange = (event) => {
-        setSelectedIndustries(event.target.value);
-        handleProfileChange(event);
-    };
 
     const handleChange = (e) => {
         let { name, value } = e.target;
@@ -68,21 +63,36 @@ function SignUpStepper({ userData, setUserData, signUp,
                 ...{ [name]: value },
             }));
         }
-
-
     }
 
     const handleFileUpload = (e) => {
-        const file = e.target.files[0]
-        setDocName(file.name)
+        const file = e.target.files[0];
+        setProfileData((prevUserData) => ({
+            ...prevUserData,
+            ...{ docName: file.name },
+        }))
         const form = new FormData();
-        form.append('file', file)
-        setHeaders({ 'Content-Type': 'multipart/form-data' })
-        setBody(form)
+        form.append('file', file);
+        setHeaders({ 'Content-Type': 'multipart/form-data' });
+        setBody(form);
     }
 
     const handleProfileChange = (e) => {
         let { name, value } = e.target;
+
+        if (name === "yearsOfExperience") {
+            if (value < 0 || value > 50) {
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [name]: "Years of experience must be between 0 and 50",
+                }));
+            } else {
+                setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [name]: null,
+                }));
+            }
+        }
 
         setProfileData((prevUserData) => ({
             ...prevUserData,
@@ -90,9 +100,19 @@ function SignUpStepper({ userData, setUserData, signUp,
         }))
     }
 
+    const handleDomainChange = (event) => {
+        setSelectedDomains(event.target.value);
+        handleProfileChange(event);
+    };
+
+    const handleIndustryChange = (event) => {
+        setSelectedIndustries(event.target.value);
+        handleProfileChange(event);
+    };
+
     const validateForm = () => {
         if (profile.yearsOfExperience && profile.domainOfExpertise
-            && profile.industry && profile.resume) {
+            && profile.industry && profile.resume && !validationErrors.yearsOfExperience) {
             return false
         }
         else return true
@@ -101,8 +121,8 @@ function SignUpStepper({ userData, setUserData, signUp,
     const displayAlert = () => {
         if (error) {
             return (<Alert severity="error">{error.message}</Alert>)
-        } else if (data && docName) {
-            return (<Alert severity="success">{docName}</Alert>)
+        } else if (profile?.docName) {
+            return (<Alert severity="success">{profile?.docName}</Alert>)
         } else {
             return (null)
         }
@@ -146,28 +166,35 @@ function SignUpStepper({ userData, setUserData, signUp,
                                 <TextFieldElement fullWidth label={"Confirm Password"} id={"fullWidth"} type={'password'} name={"confirmPassword"} onChange={handleChange} required />
                                 {passwordsMatch && <p>Passwords Match</p>}
                                 <Button variant='contained' fullWidth type={'submit'}>Next </Button>
-                                {/* <Button variant="contained" fullWidth={true}>Sign Up</Button> */}
                             </Stack>
                         </FormContainer>}
 
                     {activeStep === 1 &&
                         <FormContainer
-                           // defaultValues={userData}
-                           defaultValues={{...userData, ...profile}}
+                            defaultValues={{ ...userData, ...profile }}
                             onSuccess={signUp}
                         >
                             <Stack spacing={3} alignItems="center">
                                 <div style={{ 'width': '100%' }}>
                                     <label id="profile-summary">Profile Summary</label>
-                                    <textarea 
-                                        id="profile-summary" 
-                                        name="profileSummary" 
-                                        rows="6" 
+                                    <textarea
+                                        id="profile-summary"
+                                        name="profileSummary"
+                                        rows="6"
                                         defaultValue={profile.profileSummary}
                                         style={{ 'width': '100%' }} onChange={handleProfileChange}></textarea>
                                 </div>
                                 <TextFieldElement fullWidth label={"Linked In Url"} id={"fullWidth"} type={'text'} name={"linkedInUrl"} onChange={handleProfileChange} placeholder='https://linkedin.com/....' />
-                                <TextFieldElement fullWidth label={"Years of Experience"} id={"fullWidth"} type={'number'} name={"yearsOfExperience"} onChange={handleProfileChange} required />
+                                <TextFieldElement
+                                    fullWidth label={"Years of Experience"}
+                                    id={"fullWidth"} type={'number'}
+                                    name={"yearsOfExperience"}
+                                    onChange={handleProfileChange}
+                                    inputProps={{ min: 0, max: 50 }} required
+                                    error={!!validationErrors.yearsOfExperience} 
+                                    //error={true}
+                                    helperText={validationErrors.yearsOfExperience} />
+                                    
                                 <FormControl required fullWidth>
                                     <InputLabel id="domain-label">Domain</InputLabel>
                                     <Select
@@ -231,7 +258,6 @@ function SignUpStepper({ userData, setUserData, signUp,
                                         onClick={() => fileInputRef.current.click()}
                                     >
                                         {loading ? <CircularProgress color='secondary' size={24} /> : 'Upload file'}
-
                                     </Button>
                                     <input
                                         type="file"
@@ -270,10 +296,9 @@ function SignUpStepper({ userData, setUserData, signUp,
                     </Box>
                 </React.Fragment>
             )}
-
-
         </div>
     )
 };
 
 export default SignUpStepper;
+

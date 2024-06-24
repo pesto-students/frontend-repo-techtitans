@@ -137,11 +137,13 @@ function HomePage() {
         </TableRow>
       )) :
         <TableRow>
-          <TableCell colSpan={7}>
-            <Alert severity="error">{error?.response?.data?.message || "No data to display."}</Alert>
+          <TableCell colSpan={7} >
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <Alert severity="info">
+                {error?.response?.data || "No data to display."}
+              </Alert>
+            </Box>
           </TableCell>
-
-
         </TableRow>
     )
   }
