@@ -56,10 +56,13 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
                     onChange={handleImageChange}
                 />
                 <label htmlFor="contained-button-file">
-                    <Button variant="contained" component="span" sx={{ marginTop: '2vh' }}>
+                    <Button variant="text" component="span" sx={{ marginTop: '2vh' }}>
                         Change Profile Picture
                     </Button>
                 </label>
+                <Button variant="text" component="span" sx={{ marginTop: '2vh' }} onClick={() => setSelectedImage("")}>
+                        Remove Profile Picture
+                </Button>
             </Box>
         </Box>
     );
