@@ -18,8 +18,7 @@ function SignUpStepper({ userData, setUserData, signUp,
     const [passwordsMatch, setPasswordsMatch] = useState(false);
     const [docName, setDocName] = React.useState("")
     const steps = ['Login info', 'Personel Info'];
-
-    const { data, error, loading, setBody, setHeaders } = useAxios({
+    const { data, error, loading, setBody, setHeaders, url } = useAxios({
         url: '/file/upload',
         method: 'POST',
         autoFetch: false
@@ -39,11 +38,14 @@ function SignUpStepper({ userData, setUserData, signUp,
     }
 
     useEffect(() => {
-        setProfileData((prevUserData) => ({
-            ...prevUserData,
-            ...{ resume: data?.url },
-        }))
-    }, [data, setProfileData])
+        if(url === '/file/upload') {
+            setProfileData((prevUserData) => ({
+                ...prevUserData,
+                ...{ resume: data?.url },
+            }))
+        }
+       
+    }, [data, setProfileData, url])
 
     const handleDomainChange = (event) => {
         setSelectedDomains(event.target.value);
@@ -61,12 +63,6 @@ function SignUpStepper({ userData, setUserData, signUp,
         if (name === "confirmPassword") {
             setPasswordsMatch(isPasswordMatch(value))
         } else {
-            if (name === "yearsOfExperience") {
-                setUserData((prevUserData) => ({
-                    ...prevUserData,
-                    ...{ "yearsOfExperience": parseInt(value) },
-                }));
-            }
             setUserData((prevUserData) => ({
                 ...prevUserData,
                 ...{ [name]: value },
@@ -156,13 +152,19 @@ function SignUpStepper({ userData, setUserData, signUp,
 
                     {activeStep === 1 &&
                         <FormContainer
-                            defaultValues={userData}
+                           // defaultValues={userData}
+                           defaultValues={{...userData, ...profile}}
                             onSuccess={signUp}
                         >
                             <Stack spacing={3} alignItems="center">
                                 <div style={{ 'width': '100%' }}>
                                     <label id="profile-summary">Profile Summary</label>
-                                    <textarea id="profile-summary" name="profileSummary" rows="6" style={{ 'width': '100%' }} onChange={handleProfileChange}></textarea>
+                                    <textarea 
+                                        id="profile-summary" 
+                                        name="profileSummary" 
+                                        rows="6" 
+                                        defaultValue={profile.profileSummary}
+                                        style={{ 'width': '100%' }} onChange={handleProfileChange}></textarea>
                                 </div>
                                 <TextFieldElement fullWidth label={"Linked In Url"} id={"fullWidth"} type={'text'} name={"linkedInUrl"} onChange={handleProfileChange} placeholder='https://linkedin.com/....' />
                                 <TextFieldElement fullWidth label={"Years of Experience"} id={"fullWidth"} type={'number'} name={"yearsOfExperience"} onChange={handleProfileChange} required />
@@ -219,7 +221,7 @@ function SignUpStepper({ userData, setUserData, signUp,
                                 </FormControl>
 
                                 <Stack direction="row" spacing={5} alignItems="center" justifyContent="flex-start" style={{ 'width': '100%' }}>
-                                    <label id="profile-summary">Resume</label>
+                                    <label id="resume">Resume <span style={{ color: 'red' }}>*</span></label>
                                     <Button
                                         component="label"
                                         role={undefined}

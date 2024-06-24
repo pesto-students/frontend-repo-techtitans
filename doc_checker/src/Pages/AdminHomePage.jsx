@@ -275,7 +275,7 @@ function HomePage() {
                     </TableCell>
 
 
-                    <TableCell>{row.profile?.industry[0]}</TableCell>
+                    <TableCell>{row.profile?.industry.join(',')}</TableCell>
                     <TableCell >
                         <Button onClick={() => openResume(row.profile?.resume)}>{row.username + '_resume'}</Button>
                     </TableCell>
