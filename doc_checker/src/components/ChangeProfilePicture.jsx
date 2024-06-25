@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/system';
+import Alert from '@mui/material/Alert';
 
 const StyledAvatar = styled(Avatar)({
     width: '10vw',
@@ -16,15 +17,23 @@ const StyledImage = styled('img')({
     objectFit: 'cover',
 });
 
-function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
+function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError, setSizeError }) {
+
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setSelectedImage(event.target.result);
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
+            const maxSizeInBytes = 2 * 1024 * 1024 ;
+            if (e.target.files[0].size > maxSizeInBytes) {
+              
+              setSizeError(true)
+            } else {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    setSelectedImage(event.target.result);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+                setSizeError(false)
+            }
+          }
     };
 
     return (
@@ -32,6 +41,7 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
             component="section"
             sx={{ width: '300px', padding: 5, overflowY: 'auto' }}
         >
+            {sizeError && <Alert severity="error" sx={{mb: 2}}>File size exceeds 2 MB</Alert>}
             <Box
                 display="flex"
                 flexDirection="column"
@@ -55,6 +65,7 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user }) {
                     type="file"
                     onChange={handleImageChange}
                 />
+                
                 <label htmlFor="contained-button-file">
                     <Button variant="text" component="span" sx={{ marginTop: '2vh' }}>
                         Change Profile Picture

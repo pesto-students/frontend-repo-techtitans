@@ -28,6 +28,7 @@ function SignUpStepper({
         method: 'POST',
         autoFetch: false
     });
+    const [sizeError, setSizeError] = useState(false)
 
     useEffect(() => {
         if (data && Object.keys(data).length) {
@@ -67,14 +68,21 @@ function SignUpStepper({
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
-        setProfileData((prevUserData) => ({
-            ...prevUserData,
-            ...{ docName: file.name },
-        }))
-        const form = new FormData();
-        form.append('file', file);
-        setHeaders({ 'Content-Type': 'multipart/form-data' });
-        setBody(form);
+        const maxSizeInBytes = 4 * 1024 * 1024 ;
+        if(file.size < maxSizeInBytes) {
+            setSizeError(false)
+            setProfileData((prevUserData) => ({
+                ...prevUserData,
+                ...{ docName: file.name },
+            }))
+            const form = new FormData();
+            form.append('file', file);
+            setHeaders({ 'Content-Type': 'multipart/form-data' });
+            setBody(form);
+        } else {
+            setSizeError(true)
+        }
+       
     }
 
     const handleProfileChange = (e) => {
@@ -258,6 +266,7 @@ function SignUpStepper({
                                         onClick={() => fileInputRef.current.click()}
                                     >
                                         {loading ? <CircularProgress color='secondary' size={24} /> : 'Upload file'}
+                                        
                                     </Button>
                                     <input
                                         type="file"
@@ -269,6 +278,7 @@ function SignUpStepper({
                                     />
 
                                     {displayAlert()}
+                                    {sizeError && <Alert severity="error">File size exceeds 4 MB</Alert>}
 
                                 </Stack>
                                 <Button

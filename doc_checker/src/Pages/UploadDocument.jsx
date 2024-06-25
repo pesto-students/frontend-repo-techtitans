@@ -55,6 +55,7 @@ function UploadDocument() {
     const [extraInfo, setExtraInfo] = React.useState('')
     const [document, setDocument] = React.useState()
     const [documentCategory, setDocumentCategory] = React.useState([])
+    const [sizeError, setSizeError] = React.useState(false)
     const navigate = useNavigate();
     const { data, error, loading, setUrl, setBody, setMethod, setHeaders, url } = useAxios({
         url: '/domains',
@@ -126,7 +127,7 @@ function UploadDocument() {
             return true
         }
 
-        if (activeStep === 2 && !document) {
+        if (activeStep === 2 && (!document || sizeError)) {
             return true
         }
 
@@ -175,6 +176,8 @@ function UploadDocument() {
                             data={data}
                             loading={loading}
                             error={error} url={url}
+                            sizeError={sizeError}
+                            setSizeError={setSizeError}
                         />}
                         {activeStep === 3 && <SubmitPDF />}
                         <Stack spacing={10} direction="row" mt={5} sx={{ justifyContent: 'center' }}>

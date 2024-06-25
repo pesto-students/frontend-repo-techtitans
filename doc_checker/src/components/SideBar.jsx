@@ -154,13 +154,18 @@ const Navbar = () => {
               </ListItem>
             </ClickableDiv>
             <Divider />
-            <ClickableDiv onClick={() => navigate('/settings')}>
-              <ListItem>
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItem>
-            </ClickableDiv>
-            <Divider />
+            {
+              user.role !== ROLES.ADMIN &&
+              <>
+                <ClickableDiv onClick={() => navigate('/settings')}>
+                  <ListItem>
+                    <ListItemIcon><SettingsIcon /></ListItemIcon>
+                    <ListItemText primary="Settings" />
+                  </ListItem>
+                </ClickableDiv>
+                <Divider />
+              </>
+            }
             <UserInfo>
               {user?.image ? (
                 <ProfileImage src={user.image} alt={user?.fullname} />
