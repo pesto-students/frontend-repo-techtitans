@@ -1,28 +1,29 @@
-import React, { useRef } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, CssBaseline } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, CssBaseline, Drawer, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import logo from '../images/logo.png';  
-import homeImage from '../images/landing_page_img.png';  
-import featuresImage from '../images/features.svg';  
-import aboutImage from '../images/aboutus.png'; 
+import MenuIcon from '@mui/icons-material/Menu';
+import logo from '../images/logo.png';
+import homeImage from '../images/landing_page_img.png';
+import featuresImage from '../images/features.svg';
+import aboutImage from '../images/aboutus.png';
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#EFF0FB', // Customize primary color
+      main: '#EFF0FB',
     },
   },
   typography: {
     fontFamily: 'Arial, sans-serif',
   },
-  spacing: 8, // Default spacing value
+  spacing: 8,
 });
 
 const Root = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100vh', // Ensure the root container takes up the full viewport height
+  minHeight: '100vh',
 });
 
 const CustomAppBar = styled(AppBar)({
@@ -32,13 +33,13 @@ const CustomAppBar = styled(AppBar)({
 });
 
 const Logo = styled('img')({
-  height: '40px', // Adjust the height of the logo as needed
+  height: '40px',
   marginRight: theme.spacing(2),
 });
 
 const LogoText = styled(Typography)({
   flexGrow: 1,
-  fontSize: '32px !important', // Decreased font size
+  fontSize: '32px !important',
   fontWeight: 'bold !important',
 });
 
@@ -48,7 +49,10 @@ const HomeContainer = styled(Container)({
   justifyContent: 'center',
   textAlign: 'left',
   padding: theme.spacing(4),
-  minHeight: '100vh', // Ensure home section takes up full viewport height
+  minHeight: '100vh',
+  margin: 0,
+  width: '100%',
+  maxWidth: '100%',
 });
 
 const HomeText = styled(Box)({
@@ -58,7 +62,7 @@ const HomeText = styled(Box)({
 const HomeImage = styled('img')({
   width: '100%',
   height: 'auto',
-  maxHeight: '500px', // Adjust max height as needed
+  maxHeight: '500px',
   objectFit: 'cover',
 });
 
@@ -66,7 +70,7 @@ const FeaturesSection = styled(Box)({
   padding: theme.spacing(4),
   backgroundColor: '#f5f5f5',
   textAlign: 'center',
-  minHeight: '100vh', // Ensure features section takes up full viewport height
+  minHeight: '100vh',
 });
 
 const FeatureItem = styled(Box)({
@@ -75,7 +79,7 @@ const FeatureItem = styled(Box)({
 
 const FeaturesImage = styled('img')({
   height: 'auto',
-  maxHeight: '300px', // Adjust max height as needed
+  maxHeight: '300px',
   objectFit: 'cover',
   marginBottom: theme.spacing(2),
 });
@@ -84,13 +88,13 @@ const AboutSection = styled(Container)({
   padding: theme.spacing(4),
   backgroundColor: '#fff',
   textAlign: 'center',
-  minHeight: '100vh', // Ensure about section takes up full viewport height
+  minHeight: '100vh',
 });
 
 const AboutImage = styled('img')({
   width: '100%',
   height: 'auto',
-  maxHeight: '300px', // Adjust max height as needed
+  maxHeight: '300px',
   objectFit: 'cover',
   marginBottom: theme.spacing(2),
 });
@@ -101,11 +105,12 @@ const Buttons = styled(Box)({
 
 const Tabs = styled(Button)({
   fontWeight: 'bold !important',
-  fontSize: '16px !important', // Decreased font size
+  fontSize: '16px !important',
   marginLeft: theme.spacing(2),
 });
 
 function LandingPage() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const homeRef = useRef();
   const featureRef = useRef();
@@ -114,10 +119,19 @@ function LandingPage() {
   const scrollToRef = (ref) => {
     if (ref && ref.current) {
       window.scrollTo({
-        top: ref.current.offsetTop - 80, // Adjusted for the height of the AppBar
+        top: ref.current.offsetTop - 80,
         behavior: 'smooth',
       });
     }
+  };
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const handleNavigationClick = (ref) => {
+    scrollToRef(ref);
+    setDrawerOpen(false);
   };
 
   return (
@@ -130,29 +144,59 @@ function LandingPage() {
             <LogoText variant="h6">
               DocChecker
             </LogoText>
-            <Tabs 
-              color="inherit"
-              onClick={() => scrollToRef(homeRef)}
-            >
-              Home
-            </Tabs>
-            <Tabs 
-              color="inherit"
-              onClick={() => scrollToRef(featureRef)}
-            >
-              Features
-            </Tabs>
-            <Tabs 
-              color="inherit"
-              onClick={() => scrollToRef(aboutRef)}
-            >
-              About us
-            </Tabs>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Tabs color="inherit" onClick={() => scrollToRef(homeRef)}>
+                Home
+              </Tabs>
+              <Tabs color="inherit" onClick={() => scrollToRef(featureRef)}>
+                Features
+              </Tabs>
+              <Tabs color="inherit" onClick={() => scrollToRef(aboutRef)}>
+                About us
+              </Tabs>
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
           </Toolbar>
         </CustomAppBar>
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={handleDrawerToggle}
+          sx={{ display: { xs: 'block', md: 'none' } }}
+        >
+          <Box
+            sx={{
+              width: 250,
+            }}
+            role="presentation"
+            onClick={handleDrawerToggle}
+            onKeyDown={handleDrawerToggle}
+          >
+            <List>
+              <ListItem button onClick={() => handleNavigationClick(homeRef)}>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button onClick={() => handleNavigationClick(featureRef)}>
+                <ListItemText primary="Features" />
+              </ListItem>
+              <ListItem button onClick={() => handleNavigationClick(aboutRef)}>
+                <ListItemText primary="About us" />
+              </ListItem>
+            </List>
+          </Box>
+        </Drawer>
         <HomeContainer ref={homeRef}>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Grid container spacing={4} alignItems="center" sx={{ width: '100%', margin: 0 }}>
+            <Grid item xs={12} md={6} sx={{ padding: 0 }}>
               <HomeImage src={homeImage} alt="home" />
             </Grid>
             <Grid item xs={12} md={6}>

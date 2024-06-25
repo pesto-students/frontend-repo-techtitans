@@ -39,7 +39,9 @@ export default function BasicTable({rows, columns, populateRows}) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {
+        rows?.length > 0 && 
+        <TablePagination
         rowsPerPageOptions={[5,10]}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -48,6 +50,8 @@ export default function BasicTable({rows, columns, populateRows}) {
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPage}
       />
+      }
+     
     </>
     
 

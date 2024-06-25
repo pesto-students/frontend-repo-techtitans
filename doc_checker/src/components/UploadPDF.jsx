@@ -8,12 +8,15 @@ function UploadPDF({ setDocument, document,
     setBody, setMethod,
     setUrl, data,
     setHeaders, user,
-    loading, error, url }) {
+    loading, error, url,
+    setSizeError, sizeError }) {
     const fileInputRef = React.useRef(null);
 
 
     useEffect(() => {
-        setDocument({ ...document, ...data })
+        if(data && document?.name) {
+            setDocument({ name: document?.name, url: data?.url })
+        }
         // eslint-disable-next-line
     }, [data])
 
@@ -23,30 +26,42 @@ function UploadPDF({ setDocument, document,
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        const form = new FormData();
-        if (file) {
-            setDocument({ "name": file.name })
-            form.append('file', file)
-            setUrl('/file/upload')
-            setMethod('POST')
-            setHeaders({ 'Content-Type': 'multipart/form-data', authorization: "Bearer " + user.accessToken })
-            setBody(form)
-
+        const maxSizeInBytes = 4 * 1024 * 1024 ;
+        if(file.size < maxSizeInBytes) {
+            const form = new FormData();
+            if (file) {
+                setSizeError(false)
+                setDocument({ "name": file.name })
+                form.append('file', file)
+                setUrl('/file/upload')
+                setMethod('POST')
+                setHeaders({ 'Content-Type': 'multipart/form-data', authorization: "Bearer " + user.accessToken })
+                setBody(form)
+    
+            }
+        } else {
+            setSizeError(true)
         }
+        
     };
 
     const displayAlert = () => {
-        if (error) {
-            if (error.response?.data) {
-                return (<Alert severity="error">{error.response?.data}</Alert>)
-            } else {
-                return (<Alert severity="error">{error.message}</Alert>)
-            }
-        } else if (data && document?.name) {
-            return (<Alert severity="success">{document?.name}</Alert>)
+        if(sizeError) {
+            return (<Alert severity="error">File size exceeds 4 MB</Alert>)
         } else {
-            return (null)
+            if (error) {
+                if (error.response?.data) {
+                    return (<Alert severity="error">{error.response?.data}</Alert>)
+                } else {
+                    return (<Alert severity="error">{error.message}</Alert>)
+                }
+            } else if (document?.name) {
+                return (<Alert severity="success">{document?.name}</Alert>)
+            } else {
+                return (null)
+            }
         }
+       
     }
     return (
         <>

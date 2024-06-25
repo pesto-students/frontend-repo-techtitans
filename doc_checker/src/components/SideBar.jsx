@@ -1,15 +1,19 @@
 import React from 'react';
 import { styled } from '@mui/system';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import logo from '../images/logo.png';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,34 +25,20 @@ import { setUser } from '../redux/slicer';
 import { ROLES } from '../Constants';
 import { red } from '@mui/material/colors';
 
-const DrawerContainer = styled('div')(({ theme }) => ({
-  width: 240,
-  flexShrink: 0,
-  [theme.breakpoints.down('sm')]: {
-    width: 200,
-  },
-}));
-
-const DrawerPaper = styled('div')(({ theme }) => ({
-  width: 240,
-  backgroundColor: '#f5f5f5',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('sm')]: {
-    width: 200,
-  },
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
 }));
 
 const LogoContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(2),
-  fontWeight: 'bold',
-  fontSize: 10,
-  [theme.breakpoints.down('sm')]: {
-    fontSize: 10,
-  },
+  marginRight: theme.spacing(2),
+}));
+
+const LogoImage = styled('img')(() => ({
+  width: '40px',
+  height: '40px',
+  borderRadius: '50%', // Makes the logo round
 }));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
@@ -63,8 +53,8 @@ const UserInfo = styled('div')(({ theme }) => ({
 }));
 
 const ProfileImage = styled('img')(({ theme }) => ({
-  width: theme.spacing(7),
-  height: theme.spacing(7),
+  width: theme.spacing(4),
+  height: theme.spacing(4),
   borderRadius: '50%',
   marginRight: theme.spacing(1),
 }));
@@ -72,22 +62,23 @@ const ProfileImage = styled('img')(({ theme }) => ({
 const UserNameEmail = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: '1rem',  // Added margin-left to create space
+  marginLeft: '1rem',
 }));
 
 const ClickableDiv = styled('div')(() => ({
   cursor: 'pointer',
 }));
 
-const BottomSection = styled('div')({
-  marginTop: 'auto', // Pushes the bottom section to the bottom of the drawer
-});
+const DrawerHeader = styled('div')(({ theme }) => ({
+  height: theme.mixins.toolbar.minHeight,
+}));
 
-const Sidebar = () => {
+const Navbar = () => {
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showModal, setShowModal] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const openModal = () => {
     setShowModal(true);
@@ -115,50 +106,78 @@ const Sidebar = () => {
     dispatch(setUser({}));
   };
 
+  const toggleDrawer = (open) => () => {
+    setDrawerOpen(open);
+  };
+
   return (
     <>
-      <Drawer
-        className={DrawerContainer}
-        variant="permanent"
-        classes={{
-          paper: DrawerPaper,
-        }}
-      >
-        <div>
+      <StyledAppBar position="fixed">
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={toggleDrawer(true)}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
           <LogoContainer>
-            <img src={logo} alt="Logo" className={ProfileImage} />
-            <Typography variant="h5" style={{ fontSize: '24px', fontWeight: 'bold' }}>DocChecker</Typography>
+            <LogoImage src={logo} alt="Logo" />
+            <Typography variant="h6" noWrap ml={1}>DocChecker</Typography>
           </LogoContainer>
-          <List className={DrawerContainer}>
+          <div style={{ flexGrow: 1 }} />
+          {user?.image ? (
+            <ProfileImage src={user.image} alt={user?.fullname} />
+          ) : (
+            <StyledAvatar>{user?.firstname?.charAt(0).toUpperCase()}</StyledAvatar>
+          )}
+        </Toolbar>
+      </StyledAppBar>
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+      >
+        <DrawerHeader />
+        <div
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <List>
             <ClickableDiv onClick={handleHomeClick}>
               <ListItem>
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
             </ClickableDiv>
-          </List>
-        </div>
-        <BottomSection>
-          <Divider />
-          <UserInfo>
-            {user?.image ? (
-              <img src={user.image} alt={user?.fullname} className={ProfileImage} />
-            ) : (
-              <StyledAvatar>{user?.firstname?.charAt(0).toUpperCase()}</StyledAvatar>
-            )}
-            <UserNameEmail>
-              <Typography variant="body1">{user?.fullname}</Typography>
-              <Typography variant="body2">{user?.emailId}</Typography>
-            </UserNameEmail>
-          </UserInfo>
-          <Divider />
-          <List>
-            <ClickableDiv onClick={() => navigate('/settings')}>
-              <ListItem>
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItem>
-            </ClickableDiv>
+            <Divider />
+            {
+              user.role !== ROLES.ADMIN &&
+              <>
+                <ClickableDiv onClick={() => navigate('/settings')}>
+                  <ListItem>
+                    <ListItemIcon><SettingsIcon /></ListItemIcon>
+                    <ListItemText primary="Settings" />
+                  </ListItem>
+                </ClickableDiv>
+                <Divider />
+              </>
+            }
+            <UserInfo>
+              {user?.image ? (
+                <ProfileImage src={user.image} alt={user?.fullname} />
+              ) : (
+                <StyledAvatar>{user?.firstname?.charAt(0).toUpperCase()}</StyledAvatar>
+              )}
+              <UserNameEmail>
+                <Typography variant="body1">{user?.fullname}</Typography>
+                <Typography variant="body2">{user?.emailId}</Typography>
+              </UserNameEmail>
+            </UserInfo>
+            <Divider />
             <ClickableDiv onClick={openModal}>
               <ListItem>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
@@ -166,7 +185,7 @@ const Sidebar = () => {
               </ListItem>
             </ClickableDiv>
           </List>
-        </BottomSection>
+        </div>
       </Drawer>
       {showModal &&
         <BasicModal
@@ -190,4 +209,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Navbar;
