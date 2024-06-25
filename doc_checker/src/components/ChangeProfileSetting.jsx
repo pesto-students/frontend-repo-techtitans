@@ -6,7 +6,7 @@ import { Button, TextField, Stack } from '@mui/material';
 import { ROLES } from '../Constants'
 
 
-function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, data}) {
+function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage}) {
     const [firstName, setFirstName] = useState(user.firstname)
     const [lastName, setLastName] = useState(user.lastname)
     const [userName, setUserName] = useState(user.username)

@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 function Settings() {
     const user = useSelector(state => state.user.user)
     const [selectedImage, setSelectedImage] = useState(user?.image || "");
+    const [sizeError, setSizeError] = useState(false)
     const { data, error, loading, setUrl, setBody, setMethod } = useAxios({
         autoFetch: false
     });
@@ -45,7 +46,7 @@ function Settings() {
                     <Box display="flex" flexGrow={1} overflow="hidden" sx={{ border: '1px solid #E4E6EA' }}>
 
                         <ChangeProfilePicture selectedImage={selectedImage} setSelectedImage={setSelectedImage}
-                            user={user} data={data} />
+                            user={user} data={data} sizeError={sizeError} setSizeError={setSizeError}/>
                         <Box
                             component="section"
                             sx={{ flexGrow: 1, overflowY: 'auto', padding: 5 }}
@@ -53,7 +54,7 @@ function Settings() {
                             <Grid container spacing={4} direction="column">
                                 <Grid item>
                                     <ChangeProfileSetting user={user} selectedImage={selectedImage}
-                                        setUrl={setUrl} setBody={setBody} setMethod={setMethod} />
+                                        setUrl={setUrl} setBody={setBody} setMethod={setMethod}/>
                                 </Grid>
                             </Grid>
                         </Box>

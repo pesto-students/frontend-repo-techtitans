@@ -66,7 +66,7 @@ const App = () => {
             <Route path="/customer-home" element={<ProtectedRoutes Component={<CustomerHomePage />} allowCustomer={true} allowExpert={false} allowAdmin={false} />} />
             <Route path="/expert-home" element={<ProtectedRoutes Component={<ExpertHomePage />} allowCustomer={false} allowExpert={true} allowAdmin={false} />} />
             <Route path="/admin-home" element={<ProtectedRoutes Component={<AdminHomePage />} allowCustomer={false} allowExpert={false} allowAdmin={true} />} />
-            <Route path="/settings" element={<ProtectedRoutes Component={<Settings />} allowCustomer={true} allowExpert={true} allowAdmin={true} />} />
+            <Route path="/settings" element={<ProtectedRoutes Component={<Settings />} allowCustomer={true} allowExpert={true} allowAdmin={false} />} />
             <Route path="/invalid-access" element={<InvalidAccess />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<Navigate to="/" />} />

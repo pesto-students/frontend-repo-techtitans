@@ -4,6 +4,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 function GatherDocDetails(props) {
+    const handleExperience = (e) => {
+        const value = e.target.value;
+        if (value === '' || (value >= 0 && value <= 50)) {
+          props.setYearsOfExperience(value);
+        }
+    }
+
     return (
         <Box mt={5}>
             <Box component="section" sx={{ display: 'flex', alignItems: 'center' }}>
@@ -13,12 +20,16 @@ function GatherDocDetails(props) {
                 <TextField fullWidth id="outlined-controlled"
                     value={props.yearsOfExperience}
                     type='number'
-                    onChange={(e) => props.setYearsOfExperience(e.target.value)}
+                  onChange={e => handleExperience(e)}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             height: 40,
                         },
                     }}
+                    inputProps={{
+                        min: 0,
+                        max: 50,
+                      }}
                     />
             </Box>
             <Box component="section" sx={{ display: 'flex', alignItems: 'center' }} mt={3}>
