@@ -8,6 +8,8 @@ import useAxios from '../hooks/UseAxios.hook'
 import { CircularProgress, Button, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { ROLES } from '../Constants'
+// eslint-disable-next-line
+import { DisplayNotesSidebarOriginal } from '../components/DisplayNotesSidebarOriginal'
 
 function DocumentReview() {
     const location = useLocation();
@@ -31,7 +33,7 @@ function DocumentReview() {
 
     return (
         <>
-            <Box display="flex" justifyContent="space-between" width="100%" alignItems="center" ml={5}>
+            <Box display="flex" justifyContent="space-between" width="100%" alignItems="center" >
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Document Review
                 </Typography>
@@ -43,7 +45,7 @@ function DocumentReview() {
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
                 <div
                     style={{
-                        height: '680px',
+                        height: '650px',
                         marginLeft: 'auto',
                         marginRight: 'auto'
                     }}
