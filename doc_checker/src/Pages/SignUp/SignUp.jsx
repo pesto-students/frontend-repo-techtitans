@@ -44,7 +44,11 @@ const SignUp = () => {
         const { name, value } = e.target;
 
         if (name === 'confirmPassword') {
-            setPasswordsMatch(userData.password === value ? true : false);
+            if(value !== userData.password) {
+                setPasswordsMatch("Passwords do not Match")
+            } else {
+                setPasswordsMatch("")
+            }
         } else {
             setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
         }
@@ -160,9 +164,9 @@ const SignUp = () => {
                                                 className={'fullWidth'}
                                                 type={'password'}
                                                 onChange={handleChange}
+                                                helperText={<span style={{ color: 'red' }}>{passwordsMatch}</span>}
                                                 required
                                             />
-                                            {passwordsMatch && <p>Passwords Match</p>}
                                             <Button variant="contained" fullWidth type={'submit'}>
                                                 Sign Up
                                             </Button>

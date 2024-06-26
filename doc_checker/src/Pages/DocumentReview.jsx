@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import useAxios from '../hooks/UseAxios.hook'
 import { CircularProgress, Button, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import {ROLES} from '../Constants'
+import { ROLES } from '../Constants'
 
 function DocumentReview() {
     const location = useLocation();
@@ -23,6 +23,7 @@ function DocumentReview() {
         setPdf(data?.attachment)
     }, [data])
 
+
     const handleContactExpert = () => {
         window.location.href = `mailto:${expertEmailId}?subject=Document Review: ${docId}&body=Hello,`;
     };
@@ -34,10 +35,10 @@ function DocumentReview() {
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Document Review
                 </Typography>
-                {user.role === ROLES.CUSTOMER 
-                && data?.reviewStatus === "completed" 
-                && <Button variant="contained" onClick={handleContactExpert}>Contact Expert</Button>}
-                
+                {user.role === ROLES.CUSTOMER
+                    && data?.reviewStatus === "completed"
+                    && <Button variant="contained" onClick={handleContactExpert}>Contact Expert</Button>}
+
             </Box>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
                 <div
@@ -48,7 +49,11 @@ function DocumentReview() {
                     }}
                 >
                     {
-                        loading ? <CircularProgress color='secondary' size={200}/> :
+                        loading ?
+                            <Box display="flex" justifyContent="center" width="100%">
+                                <CircularProgress color='secondary' size={200} />
+                            </Box>
+                            :
                             <ErrorBoundary>
                                 {pdf && <HighlightDocument fileUrl={pdf} highlightData={data} docId={docId}
                                 />}

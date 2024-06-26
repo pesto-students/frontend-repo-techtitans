@@ -13,6 +13,7 @@ import BasicModal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
 import { ROLES } from '../../Constants';
 import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 
 const Login = () => {
     const theme = useTheme();
@@ -23,7 +24,7 @@ const Login = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalActions] = React.useState();
     const [modalTitle] = React.useState('');
-    const { setMethod, setBody, data, error } = useAxios({
+    const { setMethod, setBody, data, error, loading } = useAxios({
         url: '/auth/login',
         headers: { 'Content-Type': 'application/json' },
         autoFetch: false,
@@ -79,50 +80,57 @@ const Login = () => {
                                 {error && (
                                     <Alert severity="error">
                                         {error?.response?.data === 'UNAUTHORIZED'
-                                            ? 'Incorrect Password. Please try again.'
+                                            ? 'Incorrect Username/Password. Please try again.'
                                             : error?.response?.data}
                                     </Alert>
                                 )}
                             </Stack>
-                            <Stack direction="column" spacing={1} justifyContent="center" alignItems="center">
-                                <Container maxWidth="sm">
-                                    <FormContainer
-                                        defaultValues={{ username: userName, password: password }}
-                                        onSuccess={handlePostData}
-                                    >
-                                        <Stack spacing={3}>
-                                            <TextFieldElement
-                                                required
-                                                fullWidth
-                                                label="Username"
-                                                className="fullWidth"
-                                                type="text"
-                                                name="username"
-                                                onChange={(e) => setUserName(e.target.value)}
-                                            />
-                                            <TextFieldElement
-                                                required
-                                                fullWidth
-                                                label="Password"
-                                                className="fullWidth"
-                                                type="password"
-                                                name="password"
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
+                            {
+                                loading ?
+                                    <Box display="flex" justifyContent="center" width="100%">
+                                        <CircularProgress color='secondary' size={100} />
+                                    </Box>
+                                    :
+                                    <Stack direction="column" spacing={1} justifyContent="center" alignItems="center">
+                                        <Container maxWidth="sm">
+                                            <FormContainer
+                                                defaultValues={{ username: userName, password: password }}
+                                                onSuccess={handlePostData}
+                                            >
+                                                <Stack spacing={3}>
+                                                    <TextFieldElement
+                                                        required
+                                                        fullWidth
+                                                        label="Username"
+                                                        className="fullWidth"
+                                                        type="text"
+                                                        name="username"
+                                                        onChange={(e) => setUserName(e.target.value)}
+                                                    />
+                                                    <TextFieldElement
+                                                        required
+                                                        fullWidth
+                                                        label="Password"
+                                                        className="fullWidth"
+                                                        type="password"
+                                                        name="password"
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                    />
 
-                                            <Button variant="contained" type="submit">
-                                                Log In
+                                                    <Button variant="contained" type="submit">
+                                                        Log In
+                                                    </Button>
+                                                </Stack>
+                                            </FormContainer>
+                                        </Container>
+                                        <Typography>
+                                            Not a member?
+                                            <Button variant="text" onClick={() => navigate('/signup-as')}>
+                                                Sign up
                                             </Button>
-                                        </Stack>
-                                    </FormContainer>
-                                </Container>
-                                <Typography>
-                                    Not a member?
-                                    <Button variant="text" onClick={() => navigate('/signup-as')}>
-                                        Sign up
-                                    </Button>
-                                </Typography>
-                            </Stack>
+                                        </Typography>
+                                    </Stack>
+                            }
                         </Stack>
                     </Grid>
                 </Grid>

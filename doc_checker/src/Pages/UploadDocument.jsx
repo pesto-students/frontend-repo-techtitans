@@ -63,6 +63,7 @@ function UploadDocument() {
         autoFetch: true
     });
     const user = useSelector(state => state.user.user)
+
     const sendQuestionaire = () => {
         if (docType === DOCUMENT_TYPES.COL_APP.shortHand) {
             return CollegeEssayQuestionaire
@@ -91,7 +92,7 @@ function UploadDocument() {
         if (data && url === '/review') {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
-        if(data && url === '/domains') {
+        if (data && url === '/domains') {
             setDocumentCategory(data)
         }
         // eslint-disable-next-line
@@ -145,76 +146,80 @@ function UploadDocument() {
                     className="add-padding"
                     pt={5} pb={5}
                 >
-                    {loading && url === '/domains' ? <CircularProgress color='secondary' size={100} /> :
-                    
+                    {loading && url === '/domains' ?
+                        <Box display="flex" justifyContent="center" width="100%">
+                            <CircularProgress color='secondary' size={100} />
+                        </Box>
+                        :
+
                         error && url === '/domains' ? <Alert severity="error">{error.response?.data}</Alert> :
-                        <>
-                        <Box p={3} sx={{ border: '1px solid #909090', height: '100%', minHeight: '40vh', minWidth: '50%' }} >
-                        
-                        <MultiStepForm numberOfSteps={numberOfSteps} activeStep={activeStep} />
-                        {activeStep === 0 && <ChooseDocument 
-                        setDocType={setDocType} docType={docType} 
-                        documentCategories={documentCategory} clearDetails={clearDetails}
-                        />}
-                        {activeStep === 1 &&
-                            <GatherDocDetails
-                                yearsOfExperience={yearsOfExperience} setYearsOfExperience={setYearsOfExperience}
-                                docName={docName} setDocName={setDocName}
-                                desc={desc} setDesc={setDesc}
-                                extraInfo={extraInfo} setExtraInfo={setExtraInfo}
-                                questionsObj={sendQuestionaire()}
-                            />
-                        }
-                        {activeStep === 2 && <UploadPDF
-                            setDocument={setDocument}
-                            document={document}
-                            setUrl={setUrl}
-                            setMethod={setMethod}
-                            setBody={setBody}
-                            setHeaders={setHeaders}
-                            user={user}
-                            data={data}
-                            loading={loading}
-                            error={error} url={url}
-                            sizeError={sizeError}
-                            setSizeError={setSizeError}
-                        />}
-                        {activeStep === 3 && <SubmitPDF />}
-                        <Stack spacing={10} direction="row" mt={5} sx={{ justifyContent: 'center' }}>
-                            {activeStep !== numberOfSteps - 1 ?
-                                <>
-                                    <Button sx={{ width: '15vw' }}
-                                        variant="contained"
-                                        disabled={activeStep === 0}
-                                        onClick={handleBack}
-                                    >
-                                        Back
-                                    </Button>
-                                    <Button sx={{ width: '15vw' }}
-                                        variant="contained"
-                                        disabled={isNextDisabled}
-                                        onClick={handleNext}
-                                    >
-                                        {activeStep === numberOfSteps - 2 ? 'Submit' : 'Next'}
-                                    </Button>
-                                </> :
-                                <Button sx={{ width: '15vw' }}
-                                    variant="contained"
-                                    disabled={isNextDisabled}
-                                    onClick={() => navigate("/customer-home")}
-                                >
-                                    Done
-                                </Button>
-                            }
-                        </Stack>
+                            <>
+                                <Box p={3} sx={{ border: '1px solid #909090', height: '100%', minHeight: '40vh', minWidth: '50%' }} >
+
+                                    <MultiStepForm numberOfSteps={numberOfSteps} activeStep={activeStep} />
+                                    {activeStep === 0 && <ChooseDocument
+                                        setDocType={setDocType} docType={docType}
+                                        documentCategories={documentCategory} clearDetails={clearDetails}
+                                    />}
+                                    {activeStep === 1 &&
+                                        <GatherDocDetails
+                                            yearsOfExperience={yearsOfExperience} setYearsOfExperience={setYearsOfExperience}
+                                            docName={docName} setDocName={setDocName}
+                                            desc={desc} setDesc={setDesc}
+                                            extraInfo={extraInfo} setExtraInfo={setExtraInfo}
+                                            questionsObj={sendQuestionaire()}
+                                        />
+                                    }
+                                    {activeStep === 2 && <UploadPDF
+                                        setDocument={setDocument}
+                                        document={document}
+                                        setUrl={setUrl}
+                                        setMethod={setMethod}
+                                        setBody={setBody}
+                                        setHeaders={setHeaders}
+                                        user={user}
+                                        data={data}
+                                        loading={loading}
+                                        error={error} url={url}
+                                        sizeError={sizeError}
+                                        setSizeError={setSizeError}
+                                    />}
+                                    {activeStep === 3 && <SubmitPDF />}
+                                    <Stack spacing={10} direction="row" mt={5} sx={{ justifyContent: 'center' }}>
+                                        {activeStep !== numberOfSteps - 1 ?
+                                            <>
+                                                <Button sx={{ width: '15vw' }}
+                                                    variant="contained"
+                                                    disabled={activeStep === 0}
+                                                    onClick={handleBack}
+                                                >
+                                                    Back
+                                                </Button>
+                                                <Button sx={{ width: '15vw' }}
+                                                    variant="contained"
+                                                    disabled={isNextDisabled}
+                                                    onClick={handleNext}
+                                                >
+                                                    {activeStep === numberOfSteps - 2 ? 'Submit' : 'Next'}
+                                                </Button>
+                                            </> :
+                                            <Button sx={{ width: '15vw' }}
+                                                variant="contained"
+                                                disabled={isNextDisabled}
+                                                onClick={() => navigate("/customer-home")}
+                                            >
+                                                Done
+                                            </Button>
+                                        }
+                                    </Stack>
 
 
-                    </Box>
-                        </>
-                    
-                        
+                                </Box>
+                            </>
+
+
                     }
-                    
+
                 </Box>
 
             </Box>
