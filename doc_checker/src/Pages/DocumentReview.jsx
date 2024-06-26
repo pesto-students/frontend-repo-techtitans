@@ -23,7 +23,6 @@ function DocumentReview() {
 
     useEffect(() => {
         setPdf(data?.attachment)
-        localStorage.setItem([docId], JSON.stringify(data?.comments))
     }, [data, docId])
 
 
