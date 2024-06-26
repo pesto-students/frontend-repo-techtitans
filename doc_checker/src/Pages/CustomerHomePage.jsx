@@ -33,6 +33,8 @@ function HomePage() {
   const [allDocsTab, setAllDocsTab] = React.useState(true)
   const [completedTab, setCompleteTab] = React.useState(false)
   const [pendingTab, setPendingTab] = React.useState(false)
+  const [modalContent, setModalContent] = React.useState()
+  const [isIframe, setIsIframe] = React.useState(false)
   const { data, error, loading, } = useAxios({
     url: '/user/reviews',
     autoFetch: true
@@ -44,6 +46,8 @@ function HomePage() {
 
   const closeModal = () => {
     setShowModal(false)
+    setModalContent()
+    setIsIframe(false)
   }
 
 
@@ -54,6 +58,16 @@ function HomePage() {
 
   const showDocumentDescription = (row) => {
     setModalTitle(row.description)
+    setIsIframe(true)
+    setModalContent(<>
+      <iframe
+        title={row.attachmentName}
+        src={row.attachment}
+        width="100%"
+        height="700px"
+        style={{ border: 'none' }}
+      />
+    </>)
     openModal()
   }
 
@@ -63,11 +77,11 @@ function HomePage() {
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    filteredRows()
+    filteredRows(event.target.value)
   };
 
-  const filteredRows = () => {
-    const filteredData = data?.filter((row) => row.attachment_name.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredRows = (searchParam) => {
+    const filteredData = data?.filter((row) => row?.attachmentName?.toLowerCase().includes(searchParam?.toLowerCase()))
     setRows(filteredData)
   }
 
@@ -219,8 +233,9 @@ function HomePage() {
         <BasicModal openModal={openModal}
           closeModal={closeModal}
           showModal={showModal}
-
+          modalContent={modalContent}
           modalTitle={modalTitle}
+          isIframe={isIframe}
           modalActions={(<>
             <Stack direction="row" sx={{ margin: 'auto' }}>
               <Button

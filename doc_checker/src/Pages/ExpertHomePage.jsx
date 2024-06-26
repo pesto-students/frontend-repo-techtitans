@@ -25,6 +25,7 @@ function HomePage() {
   const [showModal, setShowModal] = React.useState(false)
   const [modalTitle, setModalTitle] = React.useState('')
   const [modalContent, setModalContent] = React.useState()
+  const [isIframe, setIsIframe] = React.useState(false)
   const { data, error, loading } = useAxios({
     url: '/user/reviews',
     autoFetch: true
@@ -37,10 +38,13 @@ function HomePage() {
 
   const closeModal = () => {
     setShowModal(false)
+    setModalContent()
+    setIsIframe(false)
   }
 
   const showDocumentDescription = (row) => {
     setModalTitle(row.description)
+    setIsIframe(true)
     setModalContent(<>
       <div>
         <b>Experience: </b> {row.relevantExp}
@@ -48,6 +52,13 @@ function HomePage() {
       <div>
         <b>Reason for review: </b> {row.reasonForReview}
       </div>
+      <iframe
+        title={row.attachmentName}
+        src={row.attachment}
+        width="100%"
+        height="700px"
+        style={{ border: 'none' }}
+      />
     </>)
     openModal()
   }
@@ -151,6 +162,7 @@ function HomePage() {
           showModal={showModal}
           modalContent={modalContent}
           modalTitle={modalTitle}
+          isIframe={isIframe}
           modalActions={(<>
             <Stack direction="row" sx={{ margin: 'auto' }}>
               <Button

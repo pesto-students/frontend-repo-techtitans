@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {  useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 axios.defaults.baseURL = 'https://backend-repo-techtitans-1.onrender.com/api';
 
@@ -22,6 +23,7 @@ const useAxios = ({
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate()
 
     const fetchData = useCallback(async () => {
         setLoading(true);
@@ -47,6 +49,13 @@ const useAxios = ({
             fetchData();
         }
     }, [fetchData, autoFetch, requestBody]);
+
+    useEffect(() => {
+        if(error?.response?.status === 440) {
+            navigate('/login')
+        }
+        // eslint-disable-next-line
+    },[error])
 
 
     return {

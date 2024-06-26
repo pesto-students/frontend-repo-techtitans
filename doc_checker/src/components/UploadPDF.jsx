@@ -12,7 +12,6 @@ function UploadPDF({ setDocument, document,
     setSizeError, sizeError }) {
     const fileInputRef = React.useRef(null);
 
-
     useEffect(() => {
         if(data && document?.name) {
             setDocument({ name: document?.name, url: data?.url })
