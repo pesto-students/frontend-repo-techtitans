@@ -61,7 +61,7 @@ const HomeText = styled(Box)({
 
 const HomeImage = styled('img')({
   width: '100%',
-  height: 'auto',
+  height: '100%',
   maxHeight: '500px',
   objectFit: 'cover',
 });
@@ -201,11 +201,11 @@ function LandingPage() {
             </Grid>
             <Grid item xs={12} md={6}>
               <HomeText>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" textAlign="center" gutterBottom> 
                   Your go-to platform for comprehensive document reviews.
                   Whether you're a student crafting the perfect college application essay, a professional fine-tuning your resume, or a product manager refining your requirements document, we've got you covered.
                 </Typography>
-                <Buttons>
+                <Buttons textAlign="center">
                   <Button 
                     variant="contained" 
                     aria-label="Login" 
