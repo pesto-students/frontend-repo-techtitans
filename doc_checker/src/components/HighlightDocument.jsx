@@ -20,9 +20,10 @@ import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function HighlightDocument({ fileUrl, highlightData, docId,}) {
+function HighlightDocument({ fileUrl, highlightData, docId, }) {
     const [message, setMessage] = React.useState('');
-    const [notes, setNotes] = React.useState(JSON.parse(localStorage.getItem([docId])) ?? []);
+    const [notes, setNotes] = React.useState(highlightData?.comments?.length > 0 ?
+        highlightData.comments : (JSON.parse(localStorage.getItem([docId])) ?? []));
     let noteId = notes[notes.length - 1]?.id || 0;
     const [showModal, setShowModal] = React.useState(false)
     const [modalTitle, setModalTitle] = React.useState('')
@@ -85,7 +86,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
             openModal()
 
         }
-// eslint-disable-next-line
+        // eslint-disable-next-line
     }, [loading, error])
 
     const confirmReviewSubmission = () => {
@@ -94,8 +95,8 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
         setBody({
             "docId": docId,
             "comments": notes
-          })
-          setUrl('/review/submit')
+        })
+        setUrl('/review/submit')
     }
 
 
@@ -133,9 +134,8 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
 
     const renderHighlightContent = (props) => {
         const styling = {
-            position: 'absolute',
-           // left: `${props.selectionRegion.left}%`,
-             left: '50%',
+            position: 'sticky',
+            left: `${props.selectionRegion.left}%`,
             top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
             zIndex: 1,
             width: '25vw'
@@ -150,7 +150,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
                 };
                 setNotes(notes.concat([note]));
                 localStorage.setItem([docId], JSON.stringify(notes))
-               //setIsSubmitReviewClicked(false)
+                //setIsSubmitReviewClicked(false)
                 props.cancel();
             }
         };
@@ -244,7 +244,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
         });
     }
     if (user.role === ROLES.EXPERT) {
-        if(highlightData?.reviewStatus === REVIEW_STATUS.COMPLETED) {
+        if (highlightData?.reviewStatus === REVIEW_STATUS.COMPLETED) {
             highlightPluginInstance = highlightPlugin({
                 renderHighlights,
             });
@@ -256,10 +256,10 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
                 renderHighlights,
             });
         }
-       
+
     }
 
-    
+
 
     const { jumpToHighlightArea } = highlightPluginInstance;
 
@@ -293,7 +293,7 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
                         overflow: 'auto',
                     }}
                 >
-                    
+
                     {
                         notes.length === 0 ?
                             <h3 style={{ fontWeight: 'bold', textAlign: 'center', marginTop: '30vh' }}>
