@@ -94,7 +94,7 @@ const ExpertSignUp = () => {
                                 <p>Enter Login Details to Access DocChecker</p>
                             </Stack>
                             <Stack>
-                                {error && <Alert severity="error">{error?.response?.data?.message|| error.message}</Alert>}
+                                {error && <Alert severity="error">{error?.response?.data?.message || error.message}</Alert>}
                             </Stack>
                             <Stack direction="column" justifyContent="center" alignItems="center">
 

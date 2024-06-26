@@ -57,7 +57,6 @@ function HomePage() {
     }
 
 
-
     useEffect(() => {
         if (url === '/users') {
             setRows(data?.data)
@@ -69,11 +68,11 @@ function HomePage() {
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
-        filteredRows()
+        filteredRows(event.target.value)
     };
 
-    const filteredRows = () => {
-        const filteredData = data?.data.filter((row) => row.fullname.toLowerCase().includes(searchQuery.toLowerCase()))
+    const filteredRows = (searchParam) => {
+        const filteredData = data?.data.filter((row) => row.fullname.toLowerCase().includes(searchParam.toLowerCase()))
         setRows(filteredData)
     }
 
@@ -239,6 +238,7 @@ function HomePage() {
                 "status": "rejected",
                 "message": rejectionReason
             })
+            openModal()
         }
     }
 
@@ -261,6 +261,7 @@ function HomePage() {
                     </Button>
                 </Stack>
             </>)
+            openModal()
         }
         if (status === "Reject") {
 
@@ -269,9 +270,9 @@ function HomePage() {
                 status,
 
             })
-            setRejectionModal(true)
+            openRejectionModal()
         }
-        openModal()
+        
     }
 
     const populateRows = (page, rowsPerPage) => {

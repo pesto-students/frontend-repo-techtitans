@@ -49,15 +49,18 @@ function SignUpStepper({
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const isPasswordMatch = (val) => {
-        return userData.password === val;
-    }
 
     const handleChange = (e) => {
         let { name, value } = e.target;
 
-        if (name === "confirmPassword") {
-            setPasswordsMatch(isPasswordMatch(value))
+        if (name === "confirmPassword" ) {
+            if(value !== userData.password) {
+                setPasswordsMatch("Passwords do not Match")
+            } else {
+                setPasswordsMatch("")
+            }
+            
+
         } else {
             setUserData((prevUserData) => ({
                 ...prevUserData,
@@ -68,8 +71,8 @@ function SignUpStepper({
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
-        const maxSizeInBytes = 4 * 1024 * 1024 ;
-        if(file.size < maxSizeInBytes) {
+        const maxSizeInBytes = 4 * 1024 * 1024;
+        if (file.size < maxSizeInBytes) {
             setSizeError(false)
             setProfileData((prevUserData) => ({
                 ...prevUserData,
@@ -82,7 +85,7 @@ function SignUpStepper({
         } else {
             setSizeError(true)
         }
-       
+
     }
 
     const handleProfileChange = (e) => {
@@ -166,13 +169,18 @@ function SignUpStepper({
                             onSuccess={handleNext}
                         >
                             <Stack spacing={3} alignItems="center">
-                                <TextFieldElement fullWidth label={"Firstname"} className={"fullWidth"} type={'text'} name={"firstname"} onChange={handleChange} required />
-                                <TextFieldElement fullWidth label={"Lastname"} className={"fullWidth"} type={'text'} name={"lastname"} onChange={handleChange} required />
-                                <TextFieldElement fullWidth label={"Email-Id"} className={"fullWidth"} type={'email'} name={"emailId"} onChange={handleChange} required />
+                                <TextFieldElement fullWidth label={"First Name"} className={"fullWidth"} type={'text'} name={"firstname"} onChange={handleChange} required />
+                                <TextFieldElement fullWidth label={"Last Name"} className={"fullWidth"} type={'text'} name={"lastname"} onChange={handleChange} required />
+                                <TextFieldElement fullWidth label={"Email Id"} className={"fullWidth"} type={'email'} name={"emailId"} onChange={handleChange} required />
                                 <TextFieldElement fullWidth label={"Username"} className={"fullWidth"} type={'text'} name={"username"} onChange={handleChange} required />
                                 <TextFieldElement fullWidth label={"Password"} className={"fullWidth"} type={'password'} name={"password"} onChange={handleChange} required />
-                                <TextFieldElement fullWidth label={"Confirm Password"} id={"fullWidth"} type={'password'} name={"confirmPassword"} onChange={handleChange} required />
-                                {passwordsMatch && <p>Passwords Match</p>}
+                                <TextFieldElement
+                                    fullWidth label={"Confirm Password"}
+                                    id={"fullWidth"} type={'password'}
+                                    name={"confirmPassword"}
+                                    onChange={handleChange} required
+                                    helperText={<span style={{ color: 'red' }}>{passwordsMatch}</span>}
+                                />
                                 <Button variant='contained' fullWidth type={'submit'}>Next </Button>
                             </Stack>
                         </FormContainer>}
@@ -199,10 +207,9 @@ function SignUpStepper({
                                     name={"yearsOfExperience"}
                                     onChange={handleProfileChange}
                                     inputProps={{ min: 0, max: 50 }} required
-                                    error={!!validationErrors.yearsOfExperience} 
-                                    //error={true}
-                                    helperText={validationErrors.yearsOfExperience} />
-                                    
+                                    error={!!validationErrors.yearsOfExperience}
+                                    helperText={<span style={{ color: "red" }}>{validationErrors.yearsOfExperience}</span>} />
+
                                 <FormControl required fullWidth>
                                     <InputLabel id="domain-label">Domain</InputLabel>
                                     <Select
@@ -266,7 +273,7 @@ function SignUpStepper({
                                         onClick={() => fileInputRef.current.click()}
                                     >
                                         {loading ? <CircularProgress color='secondary' size={24} /> : 'Upload file'}
-                                        
+
                                     </Button>
                                     <input
                                         type="file"
