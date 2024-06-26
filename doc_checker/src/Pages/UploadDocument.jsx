@@ -14,6 +14,7 @@ import { DOCUMENT_TYPES } from '../Constants'
 import useAxios from '../hooks/UseAxios.hook'
 import { useSelector } from 'react-redux';
 import Alert from '@mui/material/Alert';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ResumeQuestionaire = {
     q1: 'Number of years of relevant experience',
@@ -144,8 +145,18 @@ function UploadDocument() {
                 <Box component="section"
                     sx={{ border: '1px solid #E4E6EA', height: '100%' }}
                     className="add-padding"
-                    pt={5} pb={5}
+                    pt={1} pb={5}
                 >
+                    <Button
+                        startIcon={<ArrowBackIcon />}
+                      sx={{
+                         fontSize: '16px',
+                         fontWeight: 'bold',
+                       }}
+                       onClick={() => navigate('/customer-home')}
+                    >
+                        Home
+                    </Button>
                     {loading && url === '/domains' ?
                         <Box display="flex" justifyContent="center" width="100%">
                             <CircularProgress color='secondary' size={100} />
