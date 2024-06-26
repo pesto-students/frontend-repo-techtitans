@@ -244,12 +244,22 @@ function HighlightDocument({ fileUrl, highlightData, docId,}) {
         });
     }
     if (user.role === ROLES.EXPERT) {
-        highlightPluginInstance = highlightPlugin({
-            renderHighlightTarget,
-            renderHighlightContent,
-            renderHighlights,
-        });
+        if(highlightData?.reviewStatus === REVIEW_STATUS.COMPLETED) {
+            highlightPluginInstance = highlightPlugin({
+                renderHighlights,
+            });
+
+        } else {
+            highlightPluginInstance = highlightPlugin({
+                renderHighlightTarget,
+                renderHighlightContent,
+                renderHighlights,
+            });
+        }
+       
     }
+
+    
 
     const { jumpToHighlightArea } = highlightPluginInstance;
 
