@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Typography from '@mui/material/Typography';
 import BasicTable from '../components/TableComponent';
 import Box from '@mui/material/Box';
@@ -14,13 +14,14 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { useNavigate } from 'react-router-dom';
 import useAxios from '../hooks/UseAxios.hook'
-import { REVIEW_STATUS } from '../Constants'
+import { DOCUMENT_TYPES, REVIEW_STATUS } from '../Constants'
 import { formatDate } from '../utils'
 
 const columns = ['Id', 'User Name', 'Document Name', `Type Of Document`, 'Status', 'Created Date', '']
 
 function HomePage() {
   const navigate = useNavigate()
+  const [rows, setRows] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [showModal, setShowModal] = React.useState(false)
   const [modalTitle, setModalTitle] = React.useState('')
@@ -30,6 +31,14 @@ function HomePage() {
     url: '/user/reviews',
     autoFetch: true
   });
+
+  useEffect(() => {
+    if (data && Object.keys(data).length > 0) {
+      let sortedRows = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      setRows(sortedRows)
+    }
+
+  }, [data])
 
 
   const openModal = () => {
@@ -46,9 +55,11 @@ function HomePage() {
     setModalTitle(row.description)
     setIsIframe(true)
     setModalContent(<>
-      <div>
-        <b>Experience: </b> {row.relevantExp}
-      </div>
+      {row?.docType !== DOCUMENT_TYPES.PRD.shortHand &&
+        <div>
+          <b>Experience: </b> {row.relevantExp}
+        </div>
+      }
       <div>
         <b>Reason for review: </b> {row.reasonForReview}
       </div>
@@ -71,7 +82,8 @@ function HomePage() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredRows = data?.filter((row) =>
+
+  const filteredRows = rows?.filter((row) =>
     row?.attachmentName?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 function ChooseDocument({ docType, setDocType, documentCategories, clearDetails }) {
     const selectDocumentCategory = (doc) => {
         setDocType(doc)
-        clearDetails()
+        clearDetails(doc)
     }
 
 

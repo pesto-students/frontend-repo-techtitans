@@ -9,8 +9,9 @@ function UploadPDF({ setDocument, document,
     setUrl, data,
     setHeaders, user,
     loading, error, url,
-    setSizeError, sizeError }) {
+    setSizeError, sizeError, typeError, setTypeError }) {
     const fileInputRef = React.useRef(null);
+    
 
     useEffect(() => {
         if(data && document?.name) {
@@ -26,27 +27,36 @@ function UploadPDF({ setDocument, document,
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         const maxSizeInBytes = 4 * 1024 * 1024 ;
-        if(file.size < maxSizeInBytes) {
-            const form = new FormData();
-            if (file) {
-                setSizeError(false)
-                setDocument({ "name": file.name })
-                form.append('file', file)
-                setUrl('/file/upload')
-                setMethod('POST')
-                setHeaders({ 'Content-Type': 'multipart/form-data', authorization: "Bearer " + user.accessToken })
-                setBody(form)
-    
-            }
+        if (file.type !== 'application/pdf') {
+            setTypeError(true)
+            setSizeError(false)
         } else {
-            setSizeError(true)
+            setTypeError(false)
+            if(file.size < maxSizeInBytes) {
+                const form = new FormData();
+                if (file) {
+                    setSizeError(false)
+                    setDocument({ "name": file.name })
+                    form.append('file', file)
+                    setUrl('/file/upload')
+                    setMethod('POST')
+                    setHeaders({ 'Content-Type': 'multipart/form-data', authorization: "Bearer " + user.accessToken })
+                    setBody(form)
+        
+                }
+            } else {
+                setSizeError(true)
+            }
         }
+       
         
     };
 
     const displayAlert = () => {
         if(sizeError) {
             return (<Alert severity="error">File size exceeds 4 MB</Alert>)
+        } else if(typeError) {
+            return(<Alert severity="error">Invalid file type. Only PDF files are accepted.</Alert>)
         } else {
             if (error) {
                 if (error.response?.data) {
