@@ -2,26 +2,22 @@ import React from 'react';
 import { styled } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
+
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import logo from '../images/logo.png';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import BasicModal from './Modal';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { setUser } from '../redux/slicer';
 import { ROLES } from '../Constants';
 import { red } from '@mui/material/colors';
 
@@ -33,6 +29,7 @@ const LogoContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginRight: theme.spacing(2),
+  cursor: 'pointer',
 }));
 
 const LogoImage = styled('img')(() => ({
@@ -44,12 +41,14 @@ const LogoImage = styled('img')(() => ({
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   marginRight: theme.spacing(1),
   backgroundColor: red[500],
+  cursor: 'pointer', // Add cursor pointer to indicate it's clickable
 }));
 
-const UserInfo = styled('div')(({ theme }) => ({
+const UserDetails = styled('div')(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2),
+  flexDirection: 'column',
+  marginLeft: theme.spacing(2),
+  color: theme.palette.common.white,
 }));
 
 const ProfileImage = styled('img')(({ theme }) => ({
@@ -59,26 +58,11 @@ const ProfileImage = styled('img')(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-const UserNameEmail = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: '1rem',
-}));
-
-const ClickableDiv = styled('div')(() => ({
-  cursor: 'pointer',
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  height: theme.mixins.toolbar.minHeight,
-}));
-
 const Navbar = () => {
   const user = useSelector(state => state.user.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showModal, setShowModal] = React.useState(false);
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const openModal = () => {
     setShowModal(true);
@@ -88,7 +72,7 @@ const Navbar = () => {
     setShowModal(false);
   };
 
-  const handleHomeClick = () => {
+  const navigateToHome = () => {
     if (user.role === ROLES.CUSTOMER) {
       navigate('/customer-home');
     }
@@ -102,91 +86,76 @@ const Navbar = () => {
 
   const handleLogout = () => {
     navigate('/logout');
-    sessionStorage.clear();
-    dispatch(setUser({}));
   };
 
-  const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSettingsClick = () => {
+    handleMenuClose();
+    navigate('/settings');
+  };
+
+  const handleLogoutClick = () => {
+    handleMenuClose();
+    openModal();
   };
 
   return (
     <>
       <StyledAppBar position="fixed">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={toggleDrawer(true)}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <LogoContainer>
+          <LogoContainer onClick={navigateToHome}>
             <LogoImage src={logo} alt="Logo" />
             <Typography variant="h6" noWrap ml={1}>DocChecker</Typography>
           </LogoContainer>
           <div style={{ flexGrow: 1 }} />
           {user?.image ? (
-            <ProfileImage src={user.image} alt={user?.fullname} />
+            <ProfileImage
+              src={user.image}
+              alt={user?.fullname}
+              onClick={handleAvatarClick}
+            />
           ) : (
-            <StyledAvatar>{user?.firstname?.charAt(0).toUpperCase()}</StyledAvatar>
+            <StyledAvatar onClick={handleAvatarClick}>
+              {user?.firstname?.charAt(0).toUpperCase()}
+            </StyledAvatar>
           )}
-        </Toolbar>
-      </StyledAppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-      >
-        <DrawerHeader />
-        <div
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-          <List>
-            <ClickableDiv onClick={handleHomeClick}>
-              <ListItem>
-                <ListItemIcon><HomeIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-            </ClickableDiv>
-            <Divider />
+          <UserDetails>
+            <Typography variant="body1">{user?.fullname}</Typography>
+            <Typography variant="body2">{user?.emailId}</Typography>
+          </UserDetails>
+          <Menu sx={{ mt: 1 }}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
             {
               user.role !== ROLES.ADMIN &&
               <>
-                <ClickableDiv onClick={() => navigate('/settings')}>
-                  <ListItem>
-                    <ListItemIcon><SettingsIcon /></ListItemIcon>
-                    <ListItemText primary="Settings" />
-                  </ListItem>
-                </ClickableDiv>
+                <MenuItem onClick={handleSettingsClick} >
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </MenuItem>
                 <Divider />
               </>
             }
-            <UserInfo>
-              {user?.image ? (
-                <ProfileImage src={user.image} alt={user?.fullname} />
-              ) : (
-                <StyledAvatar>{user?.firstname?.charAt(0).toUpperCase()}</StyledAvatar>
-              )}
-              <UserNameEmail>
-                <Typography variant="body1">{user?.fullname}</Typography>
-                <Typography variant="body2">{user?.emailId}</Typography>
-              </UserNameEmail>
-            </UserInfo>
-            <Divider />
-            <ClickableDiv onClick={openModal}>
-              <ListItem>
-                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-                <ListItemText primary="Log out" />
-              </ListItem>
-            </ClickableDiv>
-          </List>
-        </div>
-      </Drawer>
+            <MenuItem onClick={handleLogoutClick}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </StyledAppBar>
       {showModal &&
         <BasicModal
           openModal={openModal}
