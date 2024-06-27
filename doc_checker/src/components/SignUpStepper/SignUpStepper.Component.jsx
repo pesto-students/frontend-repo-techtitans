@@ -20,7 +20,6 @@ function SignUpStepper({
 }) {
     const fileInputRef = React.useRef(null);
     const [activeStep, setActiveStep] = useState(0);
-    const [passwordsMatch, setPasswordsMatch] = useState(false);
     const steps = ['Login info', 'Personal Info'];
     const [validationErrors, setValidationErrors] = useState({});
     const { data, error, loading, setBody, setHeaders } = useAxios({
@@ -55,14 +54,6 @@ function SignUpStepper({
         let { name, value } = e.target;
 
         if (name !== "confirmPassword") {
-        //     if (value !== userData.password) {
-        //         setPasswordsMatch("Passwords do not Match")
-        //     } else {
-        //         setPasswordsMatch("")
-        //     }
-
-
-        // } else {
             setUserData((prevUserData) => ({
                 ...prevUserData,
                 ...{ [name]: value },
