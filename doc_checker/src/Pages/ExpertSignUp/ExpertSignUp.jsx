@@ -16,12 +16,10 @@ const ExpertSignUp = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [modalActions, setModalActions] = useState();
-    const [industries, setIndustries] = useState([]);
     const [domains, setDomains] = useState([]);
     const [selectedDomains, setSelectedDomains] = useState([]);
-    const [selectedIndustries, setSelectedIndustries] = useState([]);
     const { data, setBody, loading, error, setUrl, setMethod, url } = useAxios({
-        url: '/industries',
+        url: '/domains',
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         autoFetch: true
@@ -38,7 +36,7 @@ const ExpertSignUp = () => {
             ...userData,
             profile: {
                 domainOfExpertise: selectedDomains,
-                industry: selectedIndustries,
+                industry: ['Software'],
                 linkedInUrl: profile.linkedInUrl,
                 profileSummary: profile.profileSummary,
                 resume: profile.resume,
@@ -63,11 +61,7 @@ const ExpertSignUp = () => {
             ));
 
         }
-        if (data && url === '/industries') {
-            setIndustries(data);
-            setUrl('/domains');
-            setMethod('GET');
-        }
+
 
         if (data && url === '/domains') {
             setDomains(data);
@@ -113,9 +107,6 @@ const ExpertSignUp = () => {
                                                     setProfileData={setProfileData}
                                                     selectedDomains={selectedDomains}
                                                     setSelectedDomains={setSelectedDomains}
-                                                    selectedIndustries={selectedIndustries}
-                                                    setSelectedIndustries={setSelectedIndustries}
-                                                    industries={industries}
                                                     domains={domains}
                                                 />
                                             </Container>
