@@ -1,25 +1,33 @@
 import { Typography, Box, CircularProgress } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import useAxios from '../hooks/UseAxios.hook'
+import { setUser } from '../redux/slicer';
+import { useDispatch } from 'react-redux';
+import Alert from '@mui/material/Alert';
 
 function Logout() {
   const navigate = useNavigate()
-  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useDispatch();
+  const [showError, setShowError] = useState(false)
+  const { data, error, loading, } = useAxios({
+    url: '/auth/signout',
+    method: 'GET',
+    autoFetch: true
+  });
 
   useEffect(() => {
-    const loaderTimer = setTimeout(() => {
-      setShowLoader(true);
-    }, 200);
-    
-    const redirectTimer = setTimeout(() => {
+    if(data && Object.keys(data).length > 0) {
+      sessionStorage.clear();
+      dispatch(setUser({}));
+      setShowError(false)
       navigate('/');
-    }, 3000); 
-
-    return () => {
-      clearTimeout(loaderTimer);
-      clearTimeout(redirectTimer);
-    };
-  }, [navigate]);
+    }
+    if(error) {
+      setShowError(true)
+    }
+    // eslint-disable-next-line
+  }, [data, error]);
 
 
   return (
@@ -31,15 +39,16 @@ function Logout() {
         height: '100vh' 
       }}
     >
-      {showLoader ? 
+      {loading ? 
       <>
       <CircularProgress color='secondary' size={100} />
-      <Typography variant="body1" mt={2} ml={2}>Redirecting to the Home page...</Typography> 
+      <Typography variant="body1" mt={2} ml={2}>Logging you out...</Typography> 
       </>
       
-      :
+      : 
+      showError ? <Alert severity="error">{error?.response?.data || error?.message}</Alert> :
       <Typography variant='h5' >
-        You have successfully logged out!!!
+        {data?.message}
       </Typography>}
     </Box>
 
