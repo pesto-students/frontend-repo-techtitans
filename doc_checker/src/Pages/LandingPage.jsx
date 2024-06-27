@@ -22,6 +22,7 @@ import featuresImage from "../images/features.svg";
 import aboutImage from "../images/aboutus.png";
 import { useNavigate } from "react-router-dom";
 import TypingEffect from "../hooks/typingEffect";
+import { ROLES } from "../Constants";
 
 const theme = createTheme({
   palette: {
@@ -59,20 +60,11 @@ const LogoText = styled(Typography)({
 });
 
 const HomeContainer = styled(Grid)({
-  // display: "flex",
-  // alignItems: "center",
-  // justifyContent: "center",
-  // textAlign: "left",
-  // padding: theme.spacing(4),
-  // minHeight: "100vh",
-  // margin: 0,
-  // width: "100%",
-  // maxWidth: "100%",
 });
 
 const HomeText = styled(Box)({
   padding: theme.spacing(0, 4, 4, 4),
-  textAlign:"center"
+  textAlign: "center"
 });
 
 const FeaturesSection = styled(Box)({
@@ -115,6 +107,7 @@ function LandingPage() {
   const homeRef = useRef();
   const featureRef = useRef();
   const aboutRef = useRef();
+  let user = JSON.parse(sessionStorage.getItem('userInfo'))
 
   const scrollToRef = (ref) => {
     if (ref && ref.current) {
@@ -133,6 +126,18 @@ function LandingPage() {
     scrollToRef(ref);
     setDrawerOpen(false);
   };
+
+  const exploreDashboard = () => {
+    if (user.role === ROLES.CUSTOMER) {
+      navigate('/customer-home');
+    }
+    if (user.role === ROLES.EXPERT) {
+      navigate('/expert-home');
+    }
+    if (user.role === ROLES.ADMIN) {
+      navigate('/admin-home');
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -216,7 +221,7 @@ function LandingPage() {
               <HomeText>
                 <img src={logo} alt="DocChecker_Logo" />
                 <Typography variant="h2" mb={2} sx={{ textAlign: "center" }}>
-                  Doc Checker
+                  DocChecker
                   <TypingEffect
                     texts={[
                       "WHERE YOUR DOCUMENTS ARE NOT JUST REVIEWED BUT TRANSFORMED...!!!",
@@ -237,32 +242,48 @@ function LandingPage() {
                   a product manager refining your requirements document, we've
                   got you covered.
                 </Typography>
-                <Buttons textAlign="center" mt={3}>
-                  <Button
-                    variant="contained"
-                    aria-label="Login"
-                    style={{
-                      marginRight: 8,
-                      color: "#fff",
-                      backgroundColor: "#1976d2",
-                    }}
-                    onClick={() => navigate("/login")}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    variant="contained"
-                    aria-label="Sign Up"
-                    style={{
-                      marginRight: 8,
-                      color: "#fff",
-                      backgroundColor: "#1976d2",
-                    }}
-                    onClick={() => navigate("/signup-as")}
-                  >
-                    Sign Up
-                  </Button>
-                </Buttons>
+                {
+                  user?.accessToken ?
+                    <Button
+                      variant="contained"
+                      aria-label="Explore Dashboard"
+                      style={{
+                        marginTop: 6,
+                        color: "#fff",
+                        backgroundColor: "#1976d2",
+                      }}
+                      onClick={exploreDashboard}
+                    >
+                      Explore Dashboard
+                    </Button> :
+                    <Buttons textAlign="center" mt={3}>
+                      <Button
+                        variant="contained"
+                        aria-label="Login"
+                        style={{
+                          marginRight: 8,
+                          color: "#fff",
+                          backgroundColor: "#1976d2",
+                        }}
+                        onClick={() => navigate("/login")}
+                      >
+                        Login
+                      </Button>
+                      <Button
+                        variant="contained"
+                        aria-label="Sign Up"
+                        style={{
+                          marginRight: 8,
+                          color: "#fff",
+                          backgroundColor: "#1976d2",
+                        }}
+                        onClick={() => navigate("/signup-as")}
+                      >
+                        Sign Up
+                      </Button>
+                    </Buttons>
+                }
+
               </HomeText>
             </Grid>
           </Grid>
@@ -372,10 +393,10 @@ function LandingPage() {
               </HomeText>
             </Grid>
 
-            
-              <Grid item xs={12} md={6} className="parentDivFullHeight">
-                <img src={homeImage} alt="About us" />
-              </Grid>
+
+            <Grid item xs={12} md={6} className="parentDivFullHeight">
+              <img src={homeImage} alt="About us" />
+            </Grid>
           </Grid>
         </AboutSection>
       </Root>
