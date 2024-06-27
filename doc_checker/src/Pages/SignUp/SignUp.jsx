@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Stack, Button, Container, useMediaQuery } from '@mui/material';
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui';
+import { FormContainer, TextFieldElement, PasswordElement, PasswordRepeatElement } from 'react-hook-form-mui';
 import { useNavigate } from 'react-router-dom';
 import useAxios from '../../hooks/UseAxios.hook';
 import BasicModal from '../../components/Modal';
@@ -15,7 +15,6 @@ const SignUp = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalActions, setModalActions] = useState();
     const [modalTitle, setModalTitle] = useState('');
-    const [passwordsMatch, setPasswordsMatch] = useState(false);
     const { data, error, setBody } = useAxios({
         url: '/auth/signup',
         method: 'POST',
@@ -43,13 +42,7 @@ const SignUp = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        if (name === 'confirmPassword') {
-            if(value !== userData.password) {
-                setPasswordsMatch("Passwords do not Match")
-            } else {
-                setPasswordsMatch("")
-            }
-        } else {
+        if (name !== 'confirmPassword') {
             setUserData((prevUserData) => ({ ...prevUserData, [name]: value }));
         }
     };
@@ -115,7 +108,7 @@ const SignUp = () => {
                                             <TextFieldElement
                                                 fullWidth
                                                 name={'firstname'}
-                                                label={'Firstname'}
+                                                label={'First Name'}
                                                 className={'fullWidth'}
                                                 type={'text'}
                                                 onChange={handleChange}
@@ -124,7 +117,7 @@ const SignUp = () => {
                                             <TextFieldElement
                                                 fullWidth
                                                 name={'lastname'}
-                                                label={'Lastname'}
+                                                label={'Last Name'}
                                                 className={'fullWidth'}
                                                 type={'text'}
                                                 onChange={handleChange}
@@ -133,7 +126,7 @@ const SignUp = () => {
                                             <TextFieldElement
                                                 fullWidth
                                                 name={'emailId'}
-                                                label={'Email-Id'}
+                                                label={'Email Id'}
                                                 className={'fullWidth'}
                                                 type={'email'}
                                                 onChange={handleChange}
@@ -148,25 +141,22 @@ const SignUp = () => {
                                                 onChange={handleChange}
                                                 required
                                             />
-                                            <TextFieldElement
+                                            <PasswordElement
                                                 fullWidth
-                                                name={'password'}
+                                                className="fullWidth"
                                                 label={'Password'}
-                                                className={'fullWidth'}
-                                                type={'password'}
-                                                onChange={handleChange}
                                                 required
+                                                name={'password'}
+                                                onChange={handleChange}
                                             />
-                                            <TextFieldElement
-                                                fullWidth
+                                            <PasswordRepeatElement
+                                                passwordFieldName={'password'}
                                                 name={'confirmPassword'}
                                                 label={'Confirm Password'}
-                                                className={'fullWidth'}
-                                                type={'password'}
+                                                fullWidth className={'fullWidth'}
                                                 onChange={handleChange}
-                                                helperText={<span style={{ color: 'red' }}>{passwordsMatch}</span>}
-                                                required
-                                            />
+                                                required />
+
                                             <Button variant="contained" fullWidth type={'submit'}>
                                                 Sign Up
                                             </Button>

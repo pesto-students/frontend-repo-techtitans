@@ -15,6 +15,7 @@ function Settings() {
     const user = useSelector(state => state.user.user)
     const [selectedImage, setSelectedImage] = useState(user?.image || "");
     const [sizeError, setSizeError] = useState(false)
+    const [typeError, setTypeError] = useState(false)
     const { data, error, loading, setUrl, setBody, setMethod } = useAxios({
         autoFetch: false
     });
@@ -46,7 +47,8 @@ function Settings() {
                     <Box display="flex" flexGrow={1} overflow="hidden" sx={{ border: '1px solid #E4E6EA' }}>
 
                         <ChangeProfilePicture selectedImage={selectedImage} setSelectedImage={setSelectedImage}
-                            user={user} data={data} sizeError={sizeError} setSizeError={setSizeError}/>
+                            user={user} data={data} sizeError={sizeError} setSizeError={setSizeError}
+                            typeError={typeError} setTypeError={setTypeError} />
                         <Box
                             component="section"
                             sx={{ flexGrow: 1, overflowY: 'auto', padding: 5 }}

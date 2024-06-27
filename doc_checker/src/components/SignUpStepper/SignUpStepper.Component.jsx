@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Button, Stepper, Step, StepLabel, Typography, Box, MenuItem, Select, InputLabel, FormControl, Chip, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
+import { FormContainer, TextFieldElement, PasswordElement, PasswordRepeatElement } from 'react-hook-form-mui'
 import useAxios from '../../hooks/UseAxios.hook'
 import Alert from '@mui/material/Alert';
 
@@ -20,7 +20,6 @@ function SignUpStepper({
 }) {
     const fileInputRef = React.useRef(null);
     const [activeStep, setActiveStep] = useState(0);
-    const [passwordsMatch, setPasswordsMatch] = useState(false);
     const steps = ['Login info', 'Personal Info'];
     const [validationErrors, setValidationErrors] = useState({});
     const { data, error, loading, setBody, setHeaders } = useAxios({
@@ -29,6 +28,7 @@ function SignUpStepper({
         autoFetch: false
     });
     const [sizeError, setSizeError] = useState(false)
+    const [typeError, setTypeError] = useState(false)
 
     useEffect(() => {
         if (data && Object.keys(data).length) {
@@ -53,15 +53,7 @@ function SignUpStepper({
     const handleChange = (e) => {
         let { name, value } = e.target;
 
-        if (name === "confirmPassword" ) {
-            if(value !== userData.password) {
-                setPasswordsMatch("Passwords do not Match")
-            } else {
-                setPasswordsMatch("")
-            }
-            
-
-        } else {
+        if (name !== "confirmPassword") {
             setUserData((prevUserData) => ({
                 ...prevUserData,
                 ...{ [name]: value },
@@ -72,19 +64,26 @@ function SignUpStepper({
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         const maxSizeInBytes = 4 * 1024 * 1024;
-        if (file.size < maxSizeInBytes) {
+        if (file.type !== 'application/pdf') {
+            setTypeError(true);
             setSizeError(false)
-            setProfileData((prevUserData) => ({
-                ...prevUserData,
-                ...{ docName: file.name },
-            }))
-            const form = new FormData();
-            form.append('file', file);
-            setHeaders({ 'Content-Type': 'multipart/form-data' });
-            setBody(form);
         } else {
-            setSizeError(true)
+            setTypeError(false)
+            if (file.size < maxSizeInBytes) {
+                setSizeError(false)
+                setProfileData((prevUserData) => ({
+                    ...prevUserData,
+                    ...{ docName: file.name },
+                }))
+                const form = new FormData();
+                form.append('file', file);
+                setHeaders({ 'Content-Type': 'multipart/form-data' });
+                setBody(form);
+            } else {
+                setSizeError(true)
+            }
         }
+
 
     }
 
@@ -173,14 +172,21 @@ function SignUpStepper({
                                 <TextFieldElement fullWidth label={"Last Name"} className={"fullWidth"} type={'text'} name={"lastname"} onChange={handleChange} required />
                                 <TextFieldElement fullWidth label={"Email Id"} className={"fullWidth"} type={'email'} name={"emailId"} onChange={handleChange} required />
                                 <TextFieldElement fullWidth label={"Username"} className={"fullWidth"} type={'text'} name={"username"} onChange={handleChange} required />
-                                <TextFieldElement fullWidth label={"Password"} className={"fullWidth"} type={'password'} name={"password"} onChange={handleChange} required />
-                                <TextFieldElement
-                                    fullWidth label={"Confirm Password"}
-                                    id={"fullWidth"} type={'password'}
-                                    name={"confirmPassword"}
-                                    onChange={handleChange} required
-                                    helperText={<span style={{ color: 'red' }}>{passwordsMatch}</span>}
+                                <PasswordElement
+                                    fullWidth
+                                    className="fullWidth"
+                                    label={'Password'}
+                                    required
+                                    name={'password'}
+                                    onChange={handleChange}
                                 />
+                                <PasswordRepeatElement
+                                    passwordFieldName={'password'}
+                                    name={'confirmPassword'}
+                                    label={'Confirm Password'}
+                                    fullWidth className={'fullWidth'}
+                                    onChange={handleChange}
+                                    required />
                                 <Button variant='contained' fullWidth type={'submit'}>Next </Button>
                             </Stack>
                         </FormContainer>}
@@ -286,6 +292,7 @@ function SignUpStepper({
 
                                     {displayAlert()}
                                     {sizeError && <Alert severity="error">File size exceeds 4 MB</Alert>}
+                                    {typeError && <Alert severity="error">Invalid file type. Only PDF files are accepted.</Alert>}
 
                                 </Stack>
                                 <Button

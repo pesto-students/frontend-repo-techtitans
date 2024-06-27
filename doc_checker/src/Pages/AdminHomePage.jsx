@@ -20,6 +20,7 @@ import AdminRejectionModal from '../components/AdminRejectionModal';
 const columns = ['Expert Name', 'Profile Summary', `Linkedin URL`, 'Industry', 'Resume', 'Action', '']
 
 function HomePage() {
+    const [sortedData, setSortedData] = React.useState([])
     const [rows, setRows] = React.useState([])
     const [searchQuery, setSearchQuery] = React.useState('');
     const [showModal, setShowModal] = React.useState(false)
@@ -58,8 +59,10 @@ function HomePage() {
 
 
     useEffect(() => {
-        if (url === '/users') {
-            setRows(data?.data)
+        if (url === '/users' && data && Object.keys(data).length > 0) {
+            let sortedRows = data?.data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+            setRows([...sortedRows])
+            setSortedData([...sortedRows])
         }
     }, [data, url])
 
@@ -72,12 +75,12 @@ function HomePage() {
     };
 
     const filteredRows = (searchParam) => {
-        const filteredData = data?.data.filter((row) => row.fullname.toLowerCase().includes(searchParam.toLowerCase()))
+        const filteredData = sortedData?.filter((row) => row.fullname.toLowerCase().includes(searchParam.toLowerCase()))
         setRows(filteredData)
     }
 
     const filterApprovedExperts = () => {
-        let filteredData = data?.data.filter(row => row.activationStatus?.status === ACTIVATION_STATUS.APPROVED)
+        let filteredData = sortedData?.filter(row => row.activationStatus?.status === ACTIVATION_STATUS.APPROVED)
         setAllExpertsTab(false)
         setApprovedExpertsTab(true)
         setPendingExpertsTab(false)
@@ -85,7 +88,7 @@ function HomePage() {
     }
 
     const filterPendingExperts = () => {
-        let filteredData = data?.data.filter(row => row.activationStatus?.status === ACTIVATION_STATUS.PENDING)
+        let filteredData = sortedData?.filter(row => row.activationStatus?.status === ACTIVATION_STATUS.PENDING)
         setAllExpertsTab(false)
         setApprovedExpertsTab(false)
         setPendingExpertsTab(true)
@@ -96,7 +99,7 @@ function HomePage() {
         setAllExpertsTab(true)
         setApprovedExpertsTab(false)
         setPendingExpertsTab(false)
-        setRows([...data?.data])
+        setRows([...sortedData])
     }
 
 

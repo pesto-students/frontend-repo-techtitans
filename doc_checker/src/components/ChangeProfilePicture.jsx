@@ -17,23 +17,27 @@ const StyledImage = styled('img')({
     objectFit: 'cover',
 });
 
-function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError, setSizeError }) {
+function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError, setSizeError, typeError, setTypeError }) {
 
     const handleImageChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            const maxSizeInBytes = 2 * 1024 * 1024 ;
-            if (e.target.files[0].size > maxSizeInBytes) {
-              
-              setSizeError(true)
-            } else {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    setSelectedImage(event.target.result);
-                };
-                reader.readAsDataURL(e.target.files[0]);
+        let file = e.target.files[0]
+            if(!file.type.match('image/*')) {
+                setTypeError(true)
                 setSizeError(false)
+            } else {
+                setTypeError(false)
+                const maxSizeInBytes = 2 * 1024 * 1024 ;
+                if (e.target.files[0].size > maxSizeInBytes) {
+                  setSizeError(true)
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setSelectedImage(event.target.result);
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                    setSizeError(false)
+                }
             }
-          }
     };
 
     return (
@@ -42,6 +46,7 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError
             sx={{ width: '300px', padding: 5, overflowY: 'auto' }}
         >
             {sizeError && <Alert severity="error" sx={{mb: 2}}>File size exceeds 2 MB</Alert>}
+            {typeError && <Alert severity="error">Invalid file type. Only Images are accepted.</Alert>}
             <Box
                 display="flex"
                 flexDirection="column"

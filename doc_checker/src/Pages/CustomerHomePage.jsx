@@ -25,6 +25,7 @@ import { DOCUMENT_TYPES, REVIEW_STATUS } from '../Constants'
 const columns = ['Id', 'Document Name', `Type Of Document`, 'Status', '']
 
 function HomePage() {
+  const [sortedData, setSortedData] = React.useState([])
   const [rows, setRows] = React.useState([])
   const [searchQuery, setSearchQuery] = React.useState('');
   const navigate = useNavigate();
@@ -53,7 +54,12 @@ function HomePage() {
 
 
   useEffect(() => {
-    setRows(data)
+    if(data && Object.keys(data).length > 0) {
+      let sortedRows = data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+      setRows(sortedRows)
+      setSortedData(sortedRows)
+    }
+    
   }, [data])
 
   const showDocumentDescription = (row) => {
@@ -81,12 +87,12 @@ function HomePage() {
   };
 
   const filteredRows = (searchParam) => {
-    const filteredData = data?.filter((row) => row?.attachmentName?.toLowerCase().includes(searchParam?.toLowerCase()))
+    const filteredData = sortedData?.filter((row) => row?.attachmentName?.toLowerCase().includes(searchParam?.toLowerCase()))
     setRows(filteredData)
   }
 
   const filterCompletedDocs = () => {
-    let filteredData = data.filter(row => row.reviewStatus === REVIEW_STATUS.COMPLETED)
+    let filteredData = sortedData.filter(row => row.reviewStatus === REVIEW_STATUS.COMPLETED)
     setAllDocsTab(false)
     setCompleteTab(true)
     setPendingTab(false)
@@ -94,7 +100,7 @@ function HomePage() {
   }
 
   const filterPendingDocs = () => {
-    let filteredData = data.filter(row => row.reviewStatus === REVIEW_STATUS.INPROGRESS)
+    let filteredData = sortedData.filter(row => row.reviewStatus === REVIEW_STATUS.INPROGRESS)
     setAllDocsTab(false)
     setCompleteTab(false)
     setPendingTab(true)
@@ -105,7 +111,7 @@ function HomePage() {
     setAllDocsTab(true)
     setCompleteTab(false)
     setPendingTab(false)
-    setRows([...data])
+    setRows([...sortedData])
   }
 
   const populateRows = (page, rowsPerPage) => {

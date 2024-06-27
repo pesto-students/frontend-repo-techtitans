@@ -57,6 +57,7 @@ function UploadDocument() {
     const [document, setDocument] = React.useState()
     const [documentCategory, setDocumentCategory] = React.useState([])
     const [sizeError, setSizeError] = React.useState(false)
+    const [typeError, setTypeError] = React.useState(false)
     const navigate = useNavigate();
     const { data, error, loading, setUrl, setBody, setMethod, setHeaders, url } = useAxios({
         url: '/domains',
@@ -81,8 +82,12 @@ function UploadDocument() {
 
     }
 
-    const clearDetails = () => {
-        setYearsOfExperience('')
+    const clearDetails = (doc) => {
+        if(doc === DOCUMENT_TYPES.PRD.shortHand) {
+            setYearsOfExperience("0")
+        } else {
+            setYearsOfExperience('')
+        }
         setDocName('')
         setDesc('')
         setExtraInfo('')
@@ -176,6 +181,7 @@ function UploadDocument() {
                                         <GatherDocDetails
                                             yearsOfExperience={yearsOfExperience} setYearsOfExperience={setYearsOfExperience}
                                             docName={docName} setDocName={setDocName}
+                                            docType={docType}
                                             desc={desc} setDesc={setDesc}
                                             extraInfo={extraInfo} setExtraInfo={setExtraInfo}
                                             questionsObj={sendQuestionaire()}
@@ -194,6 +200,8 @@ function UploadDocument() {
                                         error={error} url={url}
                                         sizeError={sizeError}
                                         setSizeError={setSizeError}
+                                        typeError={typeError}
+                                        setTypeError={setTypeError}
                                     />}
                                     {activeStep === 3 && <SubmitPDF />}
                                     <Stack spacing={10} direction="row" mt={5} sx={{ justifyContent: 'center' }}>

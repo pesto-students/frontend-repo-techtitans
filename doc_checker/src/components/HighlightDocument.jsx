@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import BasicModal from "./Modal";
 import Stack from "@mui/material/Stack";
-import { Typography, useMediaQuery} from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ROLES, REVIEW_STATUS } from "../Constants";
 import useAxios from "../hooks/UseAxios.hook";
@@ -30,7 +30,7 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-//   color: theme.palette.text.secondary,
+  //   color: theme.palette.text.secondary,
 
   overflow: "auto",
   // Hide scrollbar for Chrome, Safari and Opera
@@ -161,14 +161,29 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
     return today.toLocaleDateString("en-US", options);
   };
 
+  const selectStyling = (props) => {
+    if (props.selectionRegion.top > 50) {
+      return {
+        position: "sticky",
+        //  position: 'absolute',
+        left: `${props.selectionRegion.left}%`,
+        top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+        zIndex: 1,
+        width: "25vw",
+      };
+    } else {
+      return {
+        position: "absolute",
+        left: `40%`,
+        top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+        zIndex: 1,
+        width: "25vw",
+      };
+    }
+  };
+
   const renderHighlightContent = (props) => {
-    const styling = {
-      position: "sticky",
-      left: `${props.selectionRegion.left}%`,
-      top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
-      zIndex: 1,
-      width: "25vw",
-    };
+    const styling = selectStyling(props);
     const addNote = () => {
       if (message !== "") {
         const note = {
@@ -178,8 +193,7 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
           quote: "abc",
         };
         setNotes(notes.concat([note]));
-        localStorage.setItem([docId], JSON.stringify(notes));
-        //setIsSubmitReviewClicked(false)
+        localStorage.setItem([docId], JSON.stringify(notes.concat([note])));
         props.cancel();
       }
     };
@@ -365,17 +379,19 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
 
       {user.role === ROLES.EXPERT ? (
         <>
-          {highlightData?.reviewStatus !== REVIEW_STATUS.COMPLETED && <Button
-            variant="contained"
-            sx={{ height: "36px", width: "40vw", left: "30vw" }}
-            onClick={onSubmitReview}
-            disabled={
-              notes.length === 0 ||
-              highlightData?.reviewStatus === REVIEW_STATUS.COMPLETED
-            }
-          >
-            Submit Review
-          </Button>}
+          {highlightData?.reviewStatus !== REVIEW_STATUS.COMPLETED && (
+            <Button
+              variant="contained"
+              sx={{ height: "36px", width: "40vw", left: "30vw" }}
+              onClick={onSubmitReview}
+              disabled={
+                notes.length === 0 ||
+                highlightData?.reviewStatus === REVIEW_STATUS.COMPLETED
+              }
+            >
+              Submit Review
+            </Button>
+          )}
           {showModal && (
             <BasicModal
               openModal={openModal}
@@ -395,4 +411,3 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
 }
 
 export default HighlightDocument;
-

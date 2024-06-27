@@ -5,7 +5,7 @@ import image from '../../images/landing_page_img.png';
 import Logo from '../../images/logo.png';
 import '../SignUpAs/SignUpAsPage.css';
 import { Stack, Button, Container, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui';
+import { FormContainer, TextFieldElement, PasswordElement } from 'react-hook-form-mui';
 import useAxios from '../../hooks/UseAxios.hook';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slicer';
@@ -107,16 +107,14 @@ const Login = () => {
                                                         name="username"
                                                         onChange={(e) => setUserName(e.target.value)}
                                                     />
-                                                    <TextFieldElement
-                                                        required
+                                                    <PasswordElement
                                                         fullWidth
-                                                        label="Password"
                                                         className="fullWidth"
-                                                        type="password"
-                                                        name="password"
+                                                        label={'Password'}
+                                                        required
+                                                        name={'password'}
                                                         onChange={(e) => setPassword(e.target.value)}
                                                     />
-
                                                     <Button variant="contained" type="submit">
                                                         Log In
                                                     </Button>
