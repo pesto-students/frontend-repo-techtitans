@@ -9,15 +9,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Alert from "@mui/material/Alert";
 import BasicModal from "../components/Modal";
 import { CircularProgress, Grid } from "@mui/material";
-
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios.hook";
 import { DOCUMENT_TYPES, REVIEW_STATUS } from "../Constants";
 import { formatDate } from "../utils";
-
-import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 
 const CustLabel = styled(Typography)({
