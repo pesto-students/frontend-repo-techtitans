@@ -17,7 +17,7 @@ import { ACTIVATION_STATUS } from '../Constants'
 import AdminRejectionModal from '../components/AdminRejectionModal';
 
 
-const columns = ['Expert Name', 'Profile Summary', `Linkedin URL`, 'Industry', 'Resume', 'Action', '']
+const columns = ['Expert Name', 'Profile Summary', `Linkedin URL`,'Resume', 'Action', '']
 
 function HomePage() {
     const [sortedData, setSortedData] = React.useState([])
@@ -124,12 +124,6 @@ function HomePage() {
                     <b>Summary:</b> {row.profile?.profileSummary}
                 </Typography>
             </Box>
-            <Box sx={{ marginBottom: 2 }}>
-                <Typography variant="subtitle1">
-                    <b>Industry:</b> {row.profile?.industry.join(', ')}
-                </Typography>
-            </Box>
-
         </>)
         setModalActions(<>
             <Stack direction="row" sx={{ margin: 'auto' }}>
@@ -299,10 +293,6 @@ function HomePage() {
                                 <Button onClick={() => openLinkedIn(row.profile?.linkedInUrl)}>{row.username}</Button>
                             </TableCell> : <TableCell>NIL</TableCell>
                     }
-
-
-
-                    <TableCell>{row.profile?.industry.join(',')}</TableCell>
                     <TableCell >
                         <Button onClick={() => openResume(row.profile?.resume)}>{row.username + '_resume'}</Button>
                     </TableCell>
