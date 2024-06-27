@@ -20,3 +20,12 @@
     min-width: 100%;
     transform: translate(-50%, -50%);
   }
+
+  [data-testid="core__inner-pages"]::-webkit-scrollbar {
+    display: none;
+  }
+  
+  [data-testid="core__inner-pages"] {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }

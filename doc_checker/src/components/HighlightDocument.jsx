@@ -23,15 +23,14 @@ import { useNavigate } from "react-router-dom";
 
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f7f7f7",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-  //   color: theme.palette.text.secondary,
-
+  boxShadow:
+    "0px -2px 1px -1px rgba(0, 0, 0, 0.4), 0px 2px 0px 1px rgba(0,0,0,0.4),0px 1px 1px 0px rgba(0,0,0,0.4),0px 1px 3px 1px rgba(0,0,0,0.4)",
   overflow: "auto",
   // Hide scrollbar for Chrome, Safari and Opera
   "::-webkit-scrollbar": {
@@ -301,7 +300,6 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
     <>
       <Stack
         direction={isSmallScreen ? "column" : "row"}
-        divider={<Divider orientation="vertical" flexItem />}
         spacing={1}
         alignItems="stretch"
         sx={{ flex: 1, padding: "10px", overflow: "auto" }}
@@ -311,8 +309,8 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
             <Typography
               variant="h6"
               ml={5}
-              mt={2}
-              mb={2}
+              mt={1}
+              mb={1}
               sx={{ fontWeight: "bold" }}
             >
               {highlightData?.attachmentName}
@@ -328,6 +326,9 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
             alignItems="center"
             spacing={2}
           >
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Reviews
+            </Typography>
             {notes && notes.length === 0 ? (
               <Alert
                 severity="info"
@@ -341,16 +342,6 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
               </Alert>
             ) : (
               <>
-                <Typography
-                  variant="h5"
-                  ml={5}
-                  mt={2}
-                  mb={2}
-                  sx={{ fontWeight: "bold" }}
-                >
-                  Reviews
-                </Typography>
-
                 {notes.map((note) => {
                   return (
                     <CardComponent
