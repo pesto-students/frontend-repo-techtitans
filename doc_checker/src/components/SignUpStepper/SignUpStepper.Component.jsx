@@ -12,11 +12,8 @@ function SignUpStepper({
     profile,
     setProfileData,
     selectedDomains,
-    selectedIndustries,
     setSelectedDomains,
-    setSelectedIndustries,
-    domains,
-    industries
+    domains
 }) {
     const fileInputRef = React.useRef(null);
     const [activeStep, setActiveStep] = useState(0);
@@ -115,14 +112,9 @@ function SignUpStepper({
         handleProfileChange(event);
     };
 
-    const handleIndustryChange = (event) => {
-        setSelectedIndustries(event.target.value);
-        handleProfileChange(event);
-    };
-
     const validateForm = () => {
         if (profile.yearsOfExperience && profile.domainOfExpertise
-            && profile.industry && profile.resume && !validationErrors.yearsOfExperience) {
+         && profile.resume && !validationErrors.yearsOfExperience) {
             return false
         }
         else return true
@@ -238,31 +230,6 @@ function SignUpStepper({
                                         {domains?.map((domain) => (
                                             <MenuItem key={domain} value={domain}>
                                                 {domain}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <FormControl required fullWidth>
-                                    <InputLabel id="industry-label">Industry</InputLabel>
-                                    <Select
-                                        labelId="industry-label"
-                                        id="industry"
-                                        name="industry"
-                                        label="Industry"
-                                        multiple
-                                        value={selectedIndustries}
-                                        onChange={handleIndustryChange}
-                                        renderValue={(selected) => (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                {selected.map((value) => (
-                                                    <Chip key={value} label={value} />
-                                                ))}
-                                            </Box>
-                                        )}
-                                    >
-                                        {industries?.map((industry) => (
-                                            <MenuItem key={industry} value={industry}>
-                                                {industry}
                                             </MenuItem>
                                         ))}
                                     </Select>
