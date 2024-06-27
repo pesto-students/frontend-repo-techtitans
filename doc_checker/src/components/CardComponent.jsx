@@ -15,7 +15,7 @@ import { ROLES, REVIEW_STATUS } from '../Constants';
 
 export default function CardCompoent(props) {
     return (
-        <Card sx={{ fontSize: '14px', margin: '10px', marginLeft: '0px', borderRadius: '18px', ...props.styling }}>
+        <Card sx={{ fontSize: '14px', margin: '10px', marginLeft: '0px', borderRadius: '18px', boxSizing: 'border-box', ...props.styling }}>
             <CardHeader
                     avatar={
                         props.img ?
@@ -37,12 +37,12 @@ export default function CardCompoent(props) {
                     }
 
                     title={
-                        <Typography sx={{ fontWeight: 'bold' }}>
+                        <Typography sx={{ fontWeight: 'bold', textAlign: 'left' }}>
                             {props.name}
                         </Typography>
                     }
                     subheader={
-                        <Typography sx={{ color: '#9CA3AF' }}>
+                        <Typography sx={{ color: '#9CA3AF', textAlign: 'left' }}>
                             {props.note?.date || props?.getDate()}
                             
                         </Typography>
@@ -50,7 +50,7 @@ export default function CardCompoent(props) {
                 />
             <CardActionArea
                 {...(props.isReviewBox ? { onClick: () => { props.jumpToHighlightArea(props.note.highlightAreas[0]) } } : {})}
-            >
+                sx={{ textAlign: 'left', padding: '10px' }}>
                 
                 {props.children}
             </CardActionArea>
