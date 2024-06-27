@@ -132,14 +132,29 @@ function HighlightDocument({ fileUrl, highlightData, docId, }) {
         return today.toLocaleDateString('en-US', options);
     }
 
-    const renderHighlightContent = (props) => {
-        const styling = {
-            position: 'sticky',
-            left: `${props.selectionRegion.left}%`,
-            top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
-            zIndex: 1,
-            width: '25vw'
+    const selectStyling = (props) => {
+        if(props.selectionRegion.top > 50) {
+            return {
+                position: 'sticky',
+             //  position: 'absolute',
+               left: `${props.selectionRegion.left}%`,
+               top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+               zIndex: 1,
+               width: '25vw'
+           }
+        } else {
+            return {
+              position: 'absolute',
+               left: `40%`,
+               top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+               zIndex: 1,
+               width: '25vw'
+           }
         }
+    }
+
+    const renderHighlightContent = (props) => {
+        const styling = selectStyling(props)
         const addNote = () => {
             if (message !== '') {
                 const note = {
@@ -149,8 +164,7 @@ function HighlightDocument({ fileUrl, highlightData, docId, }) {
                     quote: "abc"
                 };
                 setNotes(notes.concat([note]));
-                localStorage.setItem([docId], JSON.stringify(notes))
-                //setIsSubmitReviewClicked(false)
+                localStorage.setItem([docId], JSON.stringify(notes.concat([note])))
                 props.cancel();
             }
         };
