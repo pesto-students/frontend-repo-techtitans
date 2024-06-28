@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slicer';
 import BasicModal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
-import { ROLES } from '../../Constants';
+import { GENERIC_ERROR, ROLES } from '../../Constants';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
@@ -81,7 +81,7 @@ const Login = () => {
                                     <Alert severity="error">
                                         {error?.response?.data === 'UNAUTHORIZED'
                                             ? 'Incorrect Username/Password. Please try again.'
-                                            : error?.response?.data}
+                                            : error?.response?.data || GENERIC_ERROR}
                                     </Alert>
                                 )}
                             </Stack>

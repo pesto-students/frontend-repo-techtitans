@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import BasicModal from '../../components/Modal';
 import Alert from '@mui/material/Alert';
 import image from '../../images/landing_page_img.png'
+import { GENERIC_ERROR } from '../../Constants';
 
 const ExpertSignUp = () => {
     const navigate = useNavigate();
@@ -88,7 +89,7 @@ const ExpertSignUp = () => {
                                 <p>Enter Login Details to Access DocChecker</p>
                             </Stack>
                             <Stack>
-                                {error && <Alert severity="error">{error?.response?.data?.message || error.message}</Alert>}
+                                {error && <Alert severity="error">{error?.response?.data?.message || error.message || GENERIC_ERROR}</Alert>}
                             </Stack>
                             <Stack direction="column" justifyContent="center" alignItems="center">
 

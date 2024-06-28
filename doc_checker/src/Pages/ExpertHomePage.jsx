@@ -14,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { useNavigate } from 'react-router-dom';
 import useAxios from '../hooks/UseAxios.hook'
-import { DOCUMENT_TYPES, REVIEW_STATUS } from '../Constants'
+import { DOCUMENT_TYPES, REVIEW_STATUS, GENERIC_ERROR } from '../Constants'
 import { formatDate } from '../utils'
 
 const columns = ['Id', 'User Name', 'Document Name', `Type Of Document`, 'Status', 'Created Date', '']
@@ -118,9 +118,15 @@ function HomePage() {
         <TableRow>
           <TableCell colSpan={7} >
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <Alert severity="info">
-                {error?.response?.data || "No data to display."}
-              </Alert>
+              {
+                error ?
+                  <Alert severity="error">
+                    {error?.response?.data || GENERIC_ERROR}
+                  </Alert> :
+                  <Alert severity="info">
+                    No data to display.
+                  </Alert>
+              }
             </Box>
           </TableCell>
         </TableRow>

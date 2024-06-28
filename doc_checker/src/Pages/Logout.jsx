@@ -5,6 +5,7 @@ import useAxios from '../hooks/UseAxios.hook'
 import { setUser } from '../redux/slicer';
 import { useDispatch } from 'react-redux';
 import Alert from '@mui/material/Alert';
+import { GENERIC_ERROR } from '../Constants';
 
 function Logout() {
   const navigate = useNavigate()
@@ -46,7 +47,7 @@ function Logout() {
       </>
       
       : 
-      showError ? <Alert severity="error">{error?.response?.data || error?.message}</Alert> :
+      showError ? <Alert severity="error">{error?.response?.data || error?.message || GENERIC_ERROR}</Alert> :
       <Typography variant='h5' >
         {data?.message}
       </Typography>}
