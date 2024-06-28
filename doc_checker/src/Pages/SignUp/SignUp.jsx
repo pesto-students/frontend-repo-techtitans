@@ -9,6 +9,7 @@ import BasicModal from '../../components/Modal';
 import image from '../../images/landing_page_img.png';
 import '../SignUpAs/SignUpAsPage.css';
 import { GENERIC_ERROR } from '../../Constants';
+import { CircularProgress } from '@mui/material';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const SignUp = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalActions, setModalActions] = useState();
     const [modalTitle, setModalTitle] = useState('');
-    const { data, error, setBody } = useAxios({
+    const { data, error, setBody, loading } = useAxios({
         url: '/auth/signup',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -104,71 +105,79 @@ const SignUp = () => {
                             </Stack>
                             <Stack direction="column" justifyContent="center" alignItems="center">
                                 <Container maxWidth="sm">
-                                    <FormContainer defaultValues={userData} onSuccess={handlePostData}>
-                                        <Stack spacing={3} alignItems="center">
-                                            <TextFieldElement
-                                                fullWidth
-                                                name={'firstname'}
-                                                label={'First Name'}
-                                                className={'fullWidth'}
-                                                type={'text'}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                            <TextFieldElement
-                                                fullWidth
-                                                name={'lastname'}
-                                                label={'Last Name'}
-                                                className={'fullWidth'}
-                                                type={'text'}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                            <TextFieldElement
-                                                fullWidth
-                                                name={'emailId'}
-                                                label={'Email Id'}
-                                                className={'fullWidth'}
-                                                type={'email'}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                            <TextFieldElement
-                                                fullWidth
-                                                name={'username'}
-                                                label={'Username'}
-                                                className={'fullWidth'}
-                                                type={'text'}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                            <PasswordElement
-                                                fullWidth
-                                                className="fullWidth"
-                                                label={'Password'}
-                                                required
-                                                name={'password'}
-                                                onChange={handleChange}
-                                            />
-                                            <PasswordRepeatElement
-                                                passwordFieldName={'password'}
-                                                name={'confirmPassword'}
-                                                label={'Confirm Password'}
-                                                fullWidth className={'fullWidth'}
-                                                onChange={handleChange}
-                                                required />
+                                    {
+                                        loading ?
+                                            <Box display="flex" justifyContent="center" width="100%" >
+                                                <CircularProgress color='secondary' size={100} />
+                                            </Box> :
+                                            <FormContainer defaultValues={userData} onSuccess={handlePostData}>
+                                                <Stack spacing={3} alignItems="center">
+                                                    <TextFieldElement
+                                                        fullWidth
+                                                        name={'firstname'}
+                                                        label={'First Name'}
+                                                        className={'fullWidth'}
+                                                        type={'text'}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                    <TextFieldElement
+                                                        fullWidth
+                                                        name={'lastname'}
+                                                        label={'Last Name'}
+                                                        className={'fullWidth'}
+                                                        type={'text'}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                    <TextFieldElement
+                                                        fullWidth
+                                                        name={'emailId'}
+                                                        label={'Email Id'}
+                                                        className={'fullWidth'}
+                                                        type={'email'}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                    <TextFieldElement
+                                                        fullWidth
+                                                        name={'username'}
+                                                        label={'Username'}
+                                                        className={'fullWidth'}
+                                                        type={'text'}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                    <PasswordElement
+                                                        fullWidth
+                                                        className="fullWidth"
+                                                        label={'Password'}
+                                                        required
+                                                        name={'password'}
+                                                        onChange={handleChange}
+                                                    />
+                                                    <PasswordRepeatElement
+                                                        passwordFieldName={'password'}
+                                                        name={'confirmPassword'}
+                                                        label={'Confirm Password'}
+                                                        fullWidth className={'fullWidth'}
+                                                        onChange={handleChange}
+                                                        required />
 
-                                            <Button variant="contained" fullWidth type={'submit'}>
-                                                Sign Up
-                                            </Button>
-                                            <p>
-                                                Already a member?{' '}
-                                                <a href="#!" onClick={(e) => { e.preventDefault(); navigate('/login'); }}>
-                                                    Login
-                                                </a>
-                                            </p>
-                                        </Stack>
-                                    </FormContainer>
+                                                    <Button variant="contained" fullWidth type={'submit'}>
+                                                        Sign Up
+                                                    </Button>
+                                                    <p>
+                                                        Already a member?{' '}
+                                                        <a href="#!" onClick={(e) => { e.preventDefault(); navigate('/login'); }}>
+                                                            Login
+                                                        </a>
+                                                    </p>
+                                                </Stack>
+                                            </FormContainer>
+
+                                    }
+
                                 </Container>
                             </Stack>
                         </Stack>
