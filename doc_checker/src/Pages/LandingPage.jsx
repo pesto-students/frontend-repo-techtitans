@@ -297,7 +297,7 @@ function LandingPage() {
               <FeatureItem>
                 <Typography variant="h6">Expert Reviews</Typography>
                 <Typography variant="body1">
-                  Expert Reviews: Receive detailed feedback from experienced
+                  Receive detailed feedback from experienced
                   reviewers who specialize in various document types, ensuring
                   that your work meets the highest standards.
                 </Typography>
@@ -310,7 +310,7 @@ function LandingPage() {
               <FeatureItem>
                 <Typography variant="h6">Secure Platform</Typography>
                 <Typography variant="body1">
-                  Secure Platform: Rest assured that your documents are safe and
+                  Rest assured that your documents are safe and
                   secure on our platform, with strict privacy measures in place
                   to protect your sensitive information.
                 </Typography>
@@ -320,7 +320,7 @@ function LandingPage() {
               <FeatureItem>
                 <Typography variant="h6">Customized Recommendations</Typography>
                 <Typography variant="body1">
-                  Customized Recommendations: Get personalized suggestions for
+                  Get personalized suggestions for
                   improving your documents, tailored to your unique goals and
                   requirements.
                 </Typography>
@@ -330,7 +330,7 @@ function LandingPage() {
               <FeatureItem>
                 <Typography variant="h6">Fast Turnaround</Typography>
                 <Typography variant="body1">
-                  Fast Turnaround: Enjoy quick turnaround times on your document
+                  Enjoy quick turnaround times on your document
                   reviews, so you can make necessary revisions and submit your
                   applications or documents with confidence.
                 </Typography>
@@ -340,7 +340,7 @@ function LandingPage() {
               <FeatureItem>
                 <Typography variant="h6">User-Friendly Interface</Typography>
                 <Typography variant="body1">
-                  User-Friendly Interface: Navigate our intuitive platform with
+                  Navigate our intuitive platform with
                   ease, making it simple to submit documents and track reviews.
                 </Typography>
               </FeatureItem>

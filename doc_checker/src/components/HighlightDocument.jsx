@@ -346,9 +346,9 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
                     <CardComponent
                       key={note._id}
                       note={note}
-                      name={highlightData.reviewerUsername} //change to first name and last name
+                      name={highlightData.reviewerUsername} 
                       jumpToHighlightArea={jumpToHighlightArea}
-                      img={user.role === ROLES.EXPERT ? user?.image : ""}
+                      img={user.role !== ROLES.EXPERT ? highlightData?.expertDetails?.image : user?.image}
                       styling={{ maxWidth: 345, width: "100%" }}
                       isReviewBox={true}
                       user={user}
