@@ -59,7 +59,8 @@ function HomePage() {
 
 
     useEffect(() => {
-        if (url === '/users' && data && Object.keys(data).length > 0) {
+        if (url === '/users' && data && Object.keys(data).length > 1) {
+            console.log(data)
             let sortedRows = data?.data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             setRows([...sortedRows])
             setSortedData([...sortedRows])
