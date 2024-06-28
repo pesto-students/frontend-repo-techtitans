@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import HighlightDocument from "../components/HighlightDocument";
 import Typography from "@mui/material/Typography";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios.hook";
 import { CircularProgress, Button, Box, Grid, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ROLES } from "../Constants";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Tooltip from '@mui/material/Tooltip';
 // eslint-disable-next-line
 import { DisplayNotesSidebarOriginal } from "../components/DisplayNotesSidebarOriginal";
 
 import Divider from "@mui/material/Divider";
 function DocumentReview() {
+  const navigate = useNavigate()
   const location = useLocation();
   const { docId, expertEmailId } = location.state || {};
   const [pdf, setPdf] = useState("");
@@ -29,6 +32,15 @@ function DocumentReview() {
     window.location.href = `mailto:${expertEmailId}?subject=Document Review: ${docId}&body=Hello,`;
   };
 
+  const navigateToHome = () => {
+    if (user.role === ROLES.CUSTOMER) {
+      navigate('/customer-home');
+    }
+    if (user.role === ROLES.EXPERT) {
+      navigate('/expert-home');
+    }
+  }
+
   return (
     <>
       <Box>
@@ -40,6 +52,17 @@ function DocumentReview() {
               alignItems="center"
               spacing={2}
             >
+              <Tooltip title="Go to Home" arrow>
+                <Button
+                  startIcon={<ArrowBackIcon />}
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                  }}
+                  onClick={navigateToHome}
+                >
+                </Button>
+              </Tooltip>
               <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                 Document Review
               </Typography>
@@ -52,15 +75,13 @@ function DocumentReview() {
               alignItems="center"
               spacing={2}
             >
+
               {user.role === ROLES.CUSTOMER &&
                 data?.reviewStatus === "completed" && (
                   <Button variant="contained" onClick={handleContactExpert}>
                     Contact Expert
                   </Button>
                 )}
-              {/* <Button variant="contained" onClick={handleContactExpert}>
-                Contact Expert
-              </Button> */}
             </Stack>
           </Grid>
           <Grid item xs={12} style={{ height: "84vh", padding: "0" }}>
