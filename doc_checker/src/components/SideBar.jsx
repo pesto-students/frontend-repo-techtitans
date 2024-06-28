@@ -39,7 +39,6 @@ const LogoImage = styled('img')(() => ({
 }));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  marginRight: theme.spacing(1),
   backgroundColor: red[500],
   cursor: 'pointer', // Add cursor pointer to indicate it's clickable
 }));
@@ -47,7 +46,7 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
 const UserDetails = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
   color: theme.palette.common.white,
 }));
 
@@ -55,7 +54,6 @@ const ProfileImage = styled('img')(({ theme }) => ({
   width: theme.spacing(4),
   height: theme.spacing(4),
   borderRadius: '50%',
-  marginRight: theme.spacing(1),
 }));
 
 const Navbar = () => {
@@ -115,6 +113,10 @@ const Navbar = () => {
             <Typography variant="h6" noWrap ml={1}>DocChecker</Typography>
           </LogoContainer>
           <div style={{ flexGrow: 1 }} />
+          <UserDetails>
+            <Typography variant="body1" textAlign="right">{user?.fullname}</Typography>
+            <Typography variant="body2" textAlign="right">{user?.emailId}</Typography>
+          </UserDetails>
           {user?.image ? (
             <ProfileImage
               src={user.image}
@@ -126,10 +128,7 @@ const Navbar = () => {
               {user?.firstname?.charAt(0).toUpperCase()}
             </StyledAvatar>
           )}
-          <UserDetails>
-            <Typography variant="body1">{user?.fullname}</Typography>
-            <Typography variant="body2">{user?.emailId}</Typography>
-          </UserDetails>
+          
           <Menu sx={{ mt: 1 }}
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
