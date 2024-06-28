@@ -64,7 +64,8 @@ function HomePage() {
             setRows([...sortedRows])
             setSortedData([...sortedRows])
         }
-    }, [data, url])
+        // eslint-disable-next-line
+    }, [data])
 
 
 

@@ -54,6 +54,7 @@ const ProfileImage = styled('img')(({ theme }) => ({
   width: theme.spacing(4),
   height: theme.spacing(4),
   borderRadius: '50%',
+  cursor: 'pointer',
 }));
 
 const Navbar = () => {
