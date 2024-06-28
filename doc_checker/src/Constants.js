@@ -33,5 +33,5 @@ export const ACTIVATION_STATUS = {
   APPROVED: 'approved'
 }
   
-
+export const GENERIC_ERROR = "Something went wrong. Please try again."
   

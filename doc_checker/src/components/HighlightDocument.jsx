@@ -14,7 +14,7 @@ import BasicModal from "./Modal";
 import Stack from "@mui/material/Stack";
 import { Typography, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
-import { ROLES, REVIEW_STATUS } from "../Constants";
+import { ROLES, REVIEW_STATUS, GENERIC_ERROR } from "../Constants";
 import useAxios from "../hooks/UseAxios.hook";
 
 import Alert from "@mui/material/Alert";
@@ -81,9 +81,8 @@ function HighlightDocument({ fileUrl, highlightData, docId }) {
         setModalTitle(<CircularProgress color="secondary" size={100} />);
       }
       if (error) {
-        console.log(error);
         setModalTitle(
-          <Alert severity="error">{error?.response?.data?.message}</Alert>
+          <Alert severity="error">{error?.response?.data?.message || GENERIC_ERROR }</Alert>
         );
         setModalActions(
           <Stack direction="row" sx={{ margin: "auto" }}>

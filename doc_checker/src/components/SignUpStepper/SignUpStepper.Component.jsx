@@ -4,6 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { FormContainer, TextFieldElement, PasswordElement, PasswordRepeatElement } from 'react-hook-form-mui'
 import useAxios from '../../hooks/UseAxios.hook'
 import Alert from '@mui/material/Alert';
+import { GENERIC_ERROR } from '../../Constants';
 
 function SignUpStepper({
     userData,
@@ -122,7 +123,7 @@ function SignUpStepper({
 
     const displayAlert = () => {
         if (error) {
-            return (<Alert severity="error">{error.message}</Alert>)
+            return (<Alert severity="error">{error.message || GENERIC_ERROR }</Alert>)
         } else if (profile?.docName) {
             return (<Alert severity="success">{profile?.docName}</Alert>)
         } else {

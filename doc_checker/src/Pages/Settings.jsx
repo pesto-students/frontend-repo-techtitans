@@ -10,6 +10,7 @@ import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { setUser } from '../redux/slicer';
 import { useDispatch } from 'react-redux';
+import { GENERIC_ERROR } from '../Constants';
 
 function Settings() {
     const user = useSelector(state => state.user.user)
@@ -35,7 +36,7 @@ function Settings() {
                 Settings
             </Typography>
             {error ?
-                <Alert severity="error">{error?.response?.data || error?.message}</Alert> :
+                <Alert severity="error">{error?.response?.data || error?.message || GENERIC_ERROR }</Alert> :
                 data && <Alert severity="success">{data?.message}</Alert>
             }
             {
