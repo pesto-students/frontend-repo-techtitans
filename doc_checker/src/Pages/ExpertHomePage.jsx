@@ -13,7 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/UseAxios.hook";
-import { DOCUMENT_TYPES, REVIEW_STATUS } from "../Constants";
+import { DOCUMENT_TYPES, GENERIC_ERROR, REVIEW_STATUS } from "../Constants";
 import { formatDate } from "../utils";
 import { styled } from "@mui/material/styles";
 
@@ -206,9 +206,15 @@ function HomePage() {
           <Box
             sx={{ display: "flex", justifyContent: "center", width: "100%" }}
           >
-            <Alert severity="info">
-              {error?.response?.data || "No data to display."}
-            </Alert>
+            {
+              error ?
+                <Alert severity="error">
+                  {error?.response?.data || GENERIC_ERROR }
+                </Alert> :
+                <Alert severity="info">
+                  No data to display.
+                </Alert>
+            }
           </Box>
         </TableCell>
       </TableRow>

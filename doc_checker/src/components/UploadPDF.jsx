@@ -3,6 +3,7 @@ import uploadPDFImg from '../images/uploadPDF_img.png'
 import Box from '@mui/material/Box';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import { GENERIC_ERROR } from '../Constants';
 
 function UploadPDF({ setDocument, document,
     setBody, setMethod,
@@ -62,7 +63,7 @@ function UploadPDF({ setDocument, document,
                 if (error.response?.data) {
                     return (<Alert severity="error">{error.response?.data}</Alert>)
                 } else {
-                    return (<Alert severity="error">{error.message}</Alert>)
+                    return (<Alert severity="error">{error.message || GENERIC_ERROR }</Alert>)
                 }
             } else if (document?.name) {
                 return (<Alert severity="success">{document?.name}</Alert>)

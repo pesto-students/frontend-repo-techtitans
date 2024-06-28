@@ -10,7 +10,7 @@ import '../styles/UploadDocument.css'
 import UploadPDF from '../components/UploadPDF';
 import SubmitPDF from '../components/SubmitPDF'
 import { useNavigate } from "react-router-dom";
-import { DOCUMENT_TYPES } from '../Constants'
+import { DOCUMENT_TYPES, GENERIC_ERROR } from '../Constants'
 import useAxios from '../hooks/UseAxios.hook'
 import { useSelector } from 'react-redux';
 import Alert from '@mui/material/Alert';
@@ -168,7 +168,7 @@ function UploadDocument() {
                         </Box>
                         :
 
-                        error && url === '/domains' ? <Alert severity="error">{error.response?.data}</Alert> :
+                        error && url === '/domains' ? <Alert severity="error">{error.response?.data || GENERIC_ERROR }</Alert> :
                             <>
                                 <Box p={3} sx={{ border: '1px solid #909090', height: '100%', minHeight: '40vh', minWidth: '50%' }} >
 
