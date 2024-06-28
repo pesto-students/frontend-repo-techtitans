@@ -9,21 +9,24 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ROLES, REVIEW_STATUS } from '../Constants';
+import { styled } from '@mui/system';
 
 
-
-
+const ProfileImage = styled('img')(({ theme }) => ({
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    borderRadius: '50%',
+  }));
 export default function CardCompoent(props) {
     return (
         <Card sx={{ fontSize: '14px', margin: '10px', marginLeft: '0px', borderRadius: '18px', boxSizing: 'border-box', ...props.styling }}>
             <CardHeader
                     avatar={
                         props.img ?
-                            <img
-                                src={props.img}
-                                alt={props.name}
-                                loading="lazy"
-                            /> :
+                        <ProfileImage
+                        src={props?.img}
+                        alt={props?.name}
+                      /> :
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="name">
                                 {props?.name?.charAt(0)}
                             </Avatar>
