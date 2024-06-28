@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { useNavigate } from "react-router-dom";
 import useAxios from '../hooks/UseAxios.hook'
-import { DOCUMENT_TYPES, REVIEW_STATUS } from '../Constants'
+import { DOCUMENT_TYPES, GENERIC_ERROR, REVIEW_STATUS } from '../Constants'
 
 
 const columns = ['Id', 'Document Name', `Type Of Document`, 'Status', '']
@@ -54,12 +54,12 @@ function HomePage() {
 
 
   useEffect(() => {
-    if(data && Object.keys(data).length > 0) {
-      let sortedRows = data.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+    if (data && Object.keys(data).length > 0) {
+      let sortedRows = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       setRows(sortedRows)
       setSortedData(sortedRows)
     }
-    
+
   }, [data])
 
   const showDocumentDescription = (row) => {
@@ -159,9 +159,15 @@ function HomePage() {
         <TableRow>
           <TableCell colSpan={7} >
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <Alert severity="info">
-                {error?.response?.data || "No data to display."}
-              </Alert>
+              {
+                error ?
+                  <Alert severity="error">
+                    {error?.response?.data || GENERIC_ERROR }
+                  </Alert> :
+                  <Alert severity="info">
+                    No data to display.
+                  </Alert>
+              }
             </Box>
           </TableCell>
         </TableRow>

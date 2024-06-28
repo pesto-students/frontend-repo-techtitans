@@ -8,6 +8,7 @@ import useAxios from '../../hooks/UseAxios.hook';
 import BasicModal from '../../components/Modal';
 import image from '../../images/landing_page_img.png';
 import '../SignUpAs/SignUpAsPage.css';
+import { GENERIC_ERROR } from '../../Constants';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ const SignUp = () => {
 
     useEffect(() => {
         if (error && Object.keys(error).length) {
-            setModalTitle(error?.response?.data?.message || error?.message);
+            setModalTitle(error?.response?.data?.message || error?.message || GENERIC_ERROR);
             setModalActions(
                 <Stack direction="row" sx={{ margin: 'auto' }}>
                     <Button variant="contained" onClick={closeModal}>
