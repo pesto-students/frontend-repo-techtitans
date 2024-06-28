@@ -51,7 +51,7 @@ const useAxios = ({
     }, [fetchData, autoFetch, requestBody]);
 
     useEffect(() => {
-        if(error?.response?.status === 440) {
+        if(error?.response?.status === 440 || error?.response?.status === 401 ) {
             navigate('/login')
         }
         // eslint-disable-next-line
