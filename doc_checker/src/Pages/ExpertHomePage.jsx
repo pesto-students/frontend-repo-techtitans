@@ -209,7 +209,7 @@ function HomePage() {
             {
               error ?
                 <Alert severity="error">
-                  {error?.response?.data || GENERIC_ERROR }
+                  {error?.response?.data?.message || error?.message || GENERIC_ERROR }
                 </Alert> :
                 <Alert severity="info">
                   No data to display.
