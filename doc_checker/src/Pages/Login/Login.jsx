@@ -11,8 +11,8 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slicer';
 import BasicModal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
-import { GENERIC_ERROR, ROLES } from '../../Constants';
-//import { EXPERT, ADMIN, CUSTOMER } from '../../'
+import { GENERIC_ERROR, ROLES, EXPERT, ADMIN, CUSTOMER } from '../../Constants';
+// import { EXPERT, ADMIN, CUSTOMER } from '../../'
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
@@ -55,17 +55,17 @@ const Login = () => {
 
     const submitCustomer = () => {
         setMethod('POST');
-        setBody({ username: customer_userName, password: customer_password });
+        setBody({ username: CUSTOMER.userName, password: CUSTOMER.password });
     }
 
     const submitExpert = () => {
         setMethod('POST');
-        setBody({ username: expert_userName , password: expert_password });
+        setBody({ username: EXPERT.userName , password: EXPERT.password });
     }
 
     const submitAdmin = () => {
         setMethod('POST');
-        setBody({ username: admin_userName, password: admin_password});
+        setBody({ username: ADMIN.userName, password: ADMIN.password});
     }
 
     useEffect(() => {
