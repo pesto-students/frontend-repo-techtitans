@@ -11,9 +11,17 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slicer';
 import BasicModal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
-import { GENERIC_ERROR, ROLES, EXPERT, ADMIN, CUSTOMER } from '../../Constants';
+import { GENERIC_ERROR, ROLES } from '../../Constants';
+//import { EXPERT, ADMIN, CUSTOMER } from '../../'
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
+
+const admin_userName = process.env.REACT_APP_ADMIN_USERNAME
+const admin_password = process.env.REACT_APP_ADMIN_PASSWORD
+const customer_userName = process.env.REACT_APP_CUSTOMER_USERNAME
+const customer_password = process.env.REACT_APP_CUSTOMER_PASSWORD
+const expert_userName = process.env.REACT_APP_EXPERT_USERNAME
+const expert_password = process.env.REACT_APP_EXPERT_PASSWORD
 
 const Login = () => {
     const theme = useTheme();
@@ -47,17 +55,17 @@ const Login = () => {
 
     const submitCustomer = () => {
         setMethod('POST');
-        setBody({ username: CUSTOMER.userName, password: CUSTOMER.password });
+        setBody({ username: customer_userName, password: customer_password });
     }
 
     const submitExpert = () => {
         setMethod('POST');
-        setBody({ username: EXPERT.userName , password: EXPERT.password });
+        setBody({ username: expert_userName , password: expert_password });
     }
 
     const submitAdmin = () => {
         setMethod('POST');
-        setBody({ username: ADMIN.userName, password: ADMIN.password });
+        setBody({ username: admin_userName, password: admin_password});
     }
 
     useEffect(() => {
