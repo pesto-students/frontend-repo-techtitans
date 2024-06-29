@@ -34,4 +34,5 @@ export const ACTIVATION_STATUS = {
 }
   
 export const GENERIC_ERROR = "Something went wrong. Please try again."
-  
+
+

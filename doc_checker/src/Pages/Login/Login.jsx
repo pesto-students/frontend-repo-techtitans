@@ -12,8 +12,16 @@ import { setUser } from '../../redux/slicer';
 import BasicModal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
 import { GENERIC_ERROR, ROLES } from '../../Constants';
+//import { EXPERT, ADMIN, CUSTOMER } from '../../'
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
+
+const admin_userName = process.env.REACT_APP_ADMIN_USERNAME
+const admin_password = process.env.REACT_APP_ADMIN_PASSWORD
+const customer_userName = process.env.REACT_APP_CUSTOMER_USERNAME
+const customer_password = process.env.REACT_APP_CUSTOMER_PASSWORD
+const expert_userName = process.env.REACT_APP_EXPERT_USERNAME
+const expert_password = process.env.REACT_APP_EXPERT_PASSWORD
 
 const Login = () => {
     const theme = useTheme();
@@ -44,6 +52,21 @@ const Login = () => {
         setMethod('POST');
         setBody({ username: userName, password: password });
     };
+
+    const submitCustomer = () => {
+        setMethod('POST');
+        setBody({ username: customer_userName, password: customer_password });
+    }
+
+    const submitExpert = () => {
+        setMethod('POST');
+        setBody({ username: expert_userName , password: expert_password });
+    }
+
+    const submitAdmin = () => {
+        setMethod('POST');
+        setBody({ username: admin_userName, password: admin_password});
+    }
 
     useEffect(() => {
         if (data && Object.keys(data).length) {
@@ -81,7 +104,7 @@ const Login = () => {
                                     <Alert severity="error">
                                         {error?.response?.data === 'UNAUTHORIZED'
                                             ? 'Incorrect Username/Password. Please try again.'
-                                            : error?.response?.data || GENERIC_ERROR }
+                                            : error?.response?.data || GENERIC_ERROR}
                                     </Alert>
                                 )}
                             </Stack>
@@ -117,6 +140,16 @@ const Login = () => {
                                                     />
                                                     <Button variant="contained" type="submit">
                                                         Log In
+                                                    </Button>
+
+                                                    <Button variant="contained" onClick={submitCustomer}>
+                                                        Demo Customer
+                                                    </Button>
+                                                    <Button variant="contained" onClick={submitExpert}>
+                                                        Demo Expert
+                                                    </Button>
+                                                    <Button variant="contained" onClick={submitAdmin}>
+                                                        Demo Admin
                                                     </Button>
                                                 </Stack>
                                             </FormContainer>
