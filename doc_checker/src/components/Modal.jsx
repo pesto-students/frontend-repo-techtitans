@@ -9,7 +9,7 @@ export default function BasicModal({closeModal, showModal, modalTitle, modalActi
       <Dialog open={showModal} onClose={closeModal} sx={{textAlign: 'center'}} fullWidth={isIframe}>
         {modalTitle &&
             <DialogTitle>
-                <b><u>{modalTitle}</u></b>
+                <b>{modalTitle}</b>
             </DialogTitle>
         }
         {modalContent && 
