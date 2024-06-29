@@ -1,0 +1,31 @@
+.App {
+    font-family: sans-serif;
+  }
+  
+  .parentDivFullHeight {
+    /* width: 200px; */
+    height: 100vh;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0;
+  }
+  
+  .parentDivFullHeight>img {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-height: 100%;
+    min-width: 100%;
+    transform: translate(-50%, -50%);
+  }
+
+  [data-testid="core__inner-pages"]::-webkit-scrollbar {
+    display: none;
+  }
+  
+  [data-testid="core__inner-pages"] {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
