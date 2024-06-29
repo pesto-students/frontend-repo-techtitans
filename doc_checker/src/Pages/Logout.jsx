@@ -47,7 +47,7 @@ function Logout() {
       </>
       
       : 
-      showError ? <Alert severity="error">{error?.response?.data || error?.message || GENERIC_ERROR }</Alert> :
+      showError ? <Alert severity="error">{error?.response?.data?.message || error?.message || GENERIC_ERROR }</Alert> :
       <Typography variant='h5' >
         {data?.message}
       </Typography>}

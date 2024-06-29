@@ -6,7 +6,8 @@ import { Button, TextField, Stack } from '@mui/material';
 import { ROLES } from '../Constants'
 
 
-function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage}) {
+function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, setSizeError,
+    setTypeError}) {
     const [firstName, setFirstName] = useState(user.firstname)
     const [lastName, setLastName] = useState(user.lastname)
     const [userName, setUserName] = useState(user.username)
@@ -44,8 +45,9 @@ function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage})
                 "profile": user.profile
               })
         }
-        
-          setMethod('PUT')
+        setSizeError(false)
+        setTypeError(false)
+        setMethod('PUT')
     }
 
     const handleEmailChange = (e) => {
