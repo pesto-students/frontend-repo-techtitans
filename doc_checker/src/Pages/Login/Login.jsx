@@ -45,6 +45,21 @@ const Login = () => {
         setBody({ username: userName, password: password });
     };
 
+    const submitCustomer = () => {
+        setMethod('POST');
+        setBody({ username: "Anniket", password: "Anniket1" });
+    }
+
+    const submitExpert = () => {
+        setMethod('POST');
+        setBody({ username: "Rangoli", password: "Rangoli1" });
+    }
+
+    const submitAdmin = () => {
+        setMethod('POST');
+        setBody({ username: "admin", password: "admin123" });
+    }
+
     useEffect(() => {
         if (data && Object.keys(data).length) {
             sessionStorage.setItem('userInfo', JSON.stringify(data));
@@ -81,7 +96,7 @@ const Login = () => {
                                     <Alert severity="error">
                                         {error?.response?.data === 'UNAUTHORIZED'
                                             ? 'Incorrect Username/Password. Please try again.'
-                                            : error?.response?.data || GENERIC_ERROR }
+                                            : error?.response?.data || GENERIC_ERROR}
                                     </Alert>
                                 )}
                             </Stack>
@@ -117,6 +132,16 @@ const Login = () => {
                                                     />
                                                     <Button variant="contained" type="submit">
                                                         Log In
+                                                    </Button>
+
+                                                    <Button variant="contained" onClick={submitCustomer}>
+                                                        Demo Customer
+                                                    </Button>
+                                                    <Button variant="contained" onClick={submitExpert}>
+                                                        Demo Expert
+                                                    </Button>
+                                                    <Button variant="contained" onClick={submitAdmin}>
+                                                        Demo Admin
                                                     </Button>
                                                 </Stack>
                                             </FormContainer>
