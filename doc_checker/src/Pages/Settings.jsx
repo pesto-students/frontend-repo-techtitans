@@ -20,7 +20,6 @@ function Settings() {
     const { data, error, loading, setUrl, setBody, setMethod } = useAxios({
         autoFetch: false
     });
-
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -36,7 +35,7 @@ function Settings() {
                 Settings
             </Typography>
             {error ?
-                <Alert severity="error">{error?.response?.data || error?.message || GENERIC_ERROR }</Alert> :
+                <Alert severity="error">{error?.response?.data?.message || error?.message || GENERIC_ERROR}</Alert> :
                 data && <Alert severity="success">{data?.message}</Alert>
             }
             {
@@ -57,7 +56,9 @@ function Settings() {
                             <Grid container spacing={4} direction="column">
                                 <Grid item>
                                     <ChangeProfileSetting user={user} selectedImage={selectedImage}
-                                        setUrl={setUrl} setBody={setBody} setMethod={setMethod}/>
+                                        setUrl={setUrl} setBody={setBody} setMethod={setMethod}
+                                        setSizeError={setSizeError} setTypeError={setTypeError}
+                                    />
                                 </Grid>
                             </Grid>
                         </Box>

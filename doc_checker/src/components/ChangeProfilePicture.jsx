@@ -20,7 +20,11 @@ const StyledImage = styled('img')({
     objectFit: 'cover',
 });
 
-function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError, setSizeError, typeError, setTypeError }) {
+function ChangeProfilePicture({ 
+    setSelectedImage, 
+    selectedImage, user, 
+    sizeError, setSizeError, 
+    typeError, setTypeError }) {
     const { data, error, loading, setUrl, setBody, setHeaders, setMethod } = useAxios({
         autoFetch: false
     });
@@ -43,6 +47,7 @@ function ChangeProfilePicture({ setSelectedImage, selectedImage, user, sizeError
             if (e.target.files[0].size > maxSizeInBytes) {
                 setSizeError(true)
             } else {
+                setSizeError(false)
                 const form = new FormData();
                 form.append('file', file);
                 setUrl('/file/upload')
