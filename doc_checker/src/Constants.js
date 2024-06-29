@@ -34,4 +34,19 @@ export const ACTIVATION_STATUS = {
 }
   
 export const GENERIC_ERROR = "Something went wrong. Please try again."
-  
+
+export const ADMIN = {
+  userName: "admin",
+  password: "admin123"
+}
+ 
+export const EXPERT = {
+  userName: "Rangoli",
+  password: "Rangoli1"
+}
+
+export const CUSTOMER = {
+  userName: "Anniket",
+  password: "Anniket1"
+}
+
