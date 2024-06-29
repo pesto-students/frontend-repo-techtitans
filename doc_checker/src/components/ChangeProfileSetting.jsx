@@ -6,8 +6,8 @@ import { Button, TextField, Stack } from '@mui/material';
 import { ROLES } from '../Constants'
 
 
-function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, setSizeError,
-    setTypeError}) {
+function ChangeProfileSetting({ user, setUrl, setBody, setMethod, selectedImage, setSizeError,
+    setTypeError }) {
     const [firstName, setFirstName] = useState(user.firstname)
     const [lastName, setLastName] = useState(user.lastname)
     const [userName, setUserName] = useState(user.username)
@@ -20,10 +20,10 @@ function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, 
         setUserName(user?.username)
         setEmail(user.emailId)
     }, [user])
-    
+
 
     const handleProfileSettingsUpdate = () => {
-        if(user.role === ROLES.CUSTOMER) {
+        if (user.role === ROLES.CUSTOMER) {
             setUrl('/updateCustomerProfile')
             setBody({
                 "firstname": firstName,
@@ -31,10 +31,10 @@ function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, 
                 "username": userName,
                 "emailId": email,
                 "image": selectedImage
-              })
+            })
         }
 
-        if(user.role === ROLES.EXPERT) {
+        if (user.role === ROLES.EXPERT) {
             setUrl('/updateExpertProfile')
             setBody({
                 "firstname": firstName,
@@ -42,8 +42,16 @@ function ChangeProfileSetting({user, setUrl, setBody, setMethod, selectedImage, 
                 "username": userName,
                 "emailId": email,
                 "image": selectedImage,
-                "profile": user.profile
-              })
+                "profile": {
+                    "profileSummary": user?.profile?.profileSummary,
+                    "linkedInUrl": user?.profile?.linkedInUrl,
+                    "yearsOfExperience": user?.profile?.yearsOfExperience,
+                    "domainOfExpertise": user?.profile?.domainOfExpertise,
+                    "industry": user?.profile?.industry,
+                    "resume": user?.profile?.resume
+                }
+
+            })
         }
         setSizeError(false)
         setTypeError(false)
