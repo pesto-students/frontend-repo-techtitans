@@ -16,13 +16,6 @@ import { GENERIC_ERROR, ROLES, EXPERT, ADMIN, CUSTOMER } from '../../Constants';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
-const admin_userName = process.env.REACT_APP_ADMIN_USERNAME
-const admin_password = process.env.REACT_APP_ADMIN_PASSWORD
-const customer_userName = process.env.REACT_APP_CUSTOMER_USERNAME
-const customer_password = process.env.REACT_APP_CUSTOMER_PASSWORD
-const expert_userName = process.env.REACT_APP_EXPERT_USERNAME
-const expert_password = process.env.REACT_APP_EXPERT_PASSWORD
-
 const Login = () => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
