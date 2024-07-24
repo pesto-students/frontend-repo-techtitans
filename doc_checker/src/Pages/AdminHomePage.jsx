@@ -9,6 +9,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import BasicModal from '../components/Modal';
 import { CircularProgress } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -17,7 +19,15 @@ import { ACTIVATION_STATUS, GENERIC_ERROR } from '../Constants'
 import AdminRejectionModal from '../components/AdminRejectionModal';
 
 
-const columns = ['Expert Name', 'Profile Summary', `Linkedin URL`, 'Resume', 'Action', '']
+const columns = [
+    { colName: 'Expert Name', alignment: 'left' },
+    { colName: 'Profile Summary', alignment: 'left' },
+    { colName: 'Linkedin URL', alignment: 'left' },
+    { colName: 'Resume', alignment: 'left' },
+    { colName: "", alignment: 'center' }
+];
+
+
 
 function HomePage() {
     const [sortedData, setSortedData] = React.useState([])
@@ -195,7 +205,7 @@ function HomePage() {
                 setModalContent(<CircularProgress color='secondary' size={100} />)
             }
             if (error) {
-                setModalContent(<Alert severity="error">{error?.message || GENERIC_ERROR }</Alert>)
+                setModalContent(<Alert severity="error">{error?.message || GENERIC_ERROR}</Alert>)
                 setModalActions(<Stack direction="row" sx={{ margin: 'auto' }}>
                     <Button
                         variant="contained"
@@ -279,51 +289,67 @@ function HomePage() {
             rows?.length > 0 ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                 <TableRow
                     key={row.profile?._id}
-                    sx={{ height: 80 }}
                 >
                     <TableCell >
                         {row.fullname}
                     </TableCell>
                     <TableCell >
-                        <Button variant='text' onClick={() => displayProfileSummary(row)}>
+                        <Link
+                            component="button"
+                            underline="none"
+                            onClick={() => displayProfileSummary(row)}
+                        >
                             View Details
-                        </Button>
+                        </Link>
                     </TableCell>
                     {
                         row.profile?.linkedInUrl ?
                             <TableCell >
-                                <Button onClick={() => openLinkedIn(row.profile?.linkedInUrl)}>{row.username}</Button>
+                                <Link
+                                    component="button"
+                                    underline="none"
+                                    onClick={() => openLinkedIn(row.profile?.linkedInUrl)}
+                                >
+                                    {row.username}
+                                </Link>
                             </TableCell> : <TableCell>NIL</TableCell>
                     }
                     <TableCell >
-                        <Button onClick={() => openResume(row.profile?.resume)}>{row.username + '_resume'}</Button>
+                        <Link
+                            component="button"
+                            underline="none"
+                            onClick={() => openResume(row.profile?.resume)}
+                        >
+                            {row.username + '_resume'}
+                        </Link>
                     </TableCell>
                     {
                         row.activationStatus?.status === ACTIVATION_STATUS.PENDING ?
                             <>
-                                <TableCell >
+                                <TableCell align="center">
                                     <Button
+                                        sx={{marginRight:  '30px'}}
                                         variant="contained"
+                                        size="small"
                                         onClick={() => decideExpertStatus(row, "Approve")}
                                     >
                                         Approve
                                     </Button>
-                                </TableCell>
-                                <TableCell >
                                     <Button
                                         variant="contained"
+                                        size="small"
                                         onClick={() => decideExpertStatus(row, "Reject")}
                                     >
                                         Reject
                                     </Button>
+                                    
                                 </TableCell>
                             </> :
                             <>
-                                <TableCell sx={{ textTransform: 'capitalize' }}>
-                                    {row.activationStatus?.status}
-                                </TableCell>
-                                <TableCell >
-
+                                <TableCell sx={{ textTransform: 'capitalize' }} align='center'>
+                                <Chip label={row.activationStatus?.status} 
+                                color={row.activationStatus?.status === "approved" ? "success" : "error"} />
+                                    
                                 </TableCell>
                             </>
                     }
@@ -351,7 +377,7 @@ function HomePage() {
         <>
             <Box>
                 <Typography variant="h4" ml={5} mt={2} mb={2} sx={{ fontWeight: 'bold' }}>
-                    Home
+                    Dashboard
                 </Typography>
                 <Box m={5} >
                     <Box component="section" sx={{ border: '1px solid rgb(224, 224, 224)' }} p={3}>
@@ -392,6 +418,7 @@ function HomePage() {
                                     startAdornment: <InputAdornment position="start">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#1976d2"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
                                     </InputAdornment>,
+                                    placeholder: 'Search By Expert Name'
                                 }}
                             />
                         </Stack>

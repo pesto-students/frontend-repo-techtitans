@@ -9,20 +9,23 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import BasicModal from '../components/Modal';
 import { CircularProgress } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 
-import Grid from '@mui/material/Unstable_Grid2';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'; //Resume
-import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'; //LOR
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined'; //Essay
-import DocumentScannerOutlinedIcon from '@mui/icons-material/DocumentScannerOutlined'; // PRD
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { useNavigate } from "react-router-dom";
 import useAxios from '../hooks/UseAxios.hook'
-import { DOCUMENT_TYPES, GENERIC_ERROR, REVIEW_STATUS } from '../Constants'
+import { GENERIC_ERROR, REVIEW_STATUS } from '../Constants'
 
 
-const columns = ['Id', 'Document Name', `Type Of Document`, 'Status', '']
+const columns = [
+  { colName: 'Document Name', alignment: 'left', width: '20%' },
+  { colName: 'Type Of Document', alignment: 'center', width: '20%' },
+  { colName: 'Status', alignment: 'center', width: '20%' },
+  { colName: '', alignment: 'right', width: '40%' }
+];
+
 
 function HomePage() {
   const [sortedData, setSortedData] = React.useState([])
@@ -119,36 +122,28 @@ function HomePage() {
       rows?.length > 0 ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
         <TableRow
           key={row.docId}
-          sx={{ height: 80 }}
         >
-          <TableCell >
-            {row.docId}
+          <TableCell scope='row' >
+              <Link
+                component="button"
+                underline="none"
+                onClick={() => showDocumentDescription(row)}
+              >
+                {row?.attachmentName}
+              </Link>
           </TableCell>
-          <TableCell scope='row'>
-            <Grid container spacing={2}>
-              <Grid xs={2} pt={2}>
-                {row.docType === DOCUMENT_TYPES.RESUME.shortHand && <DescriptionOutlinedIcon fontSize='large' />}
-                {row.docType === DOCUMENT_TYPES.COL_APP.shortHand && <AssignmentOutlinedIcon fontSize='large' />}
-                {row.docType === DOCUMENT_TYPES.LOR.shortHand && <DraftsOutlinedIcon fontSize='large' />}
-                {row.docType === DOCUMENT_TYPES.PRD.shortHand && <DocumentScannerOutlinedIcon fontSize='large' />}
-              </Grid>
-              <Grid xs={10}>
-                <Grid xs={12} mb={1} sx={{ fontWeight: 'bold' }}>
-                  <Button sx={{ textTransform: 'none' }} onClick={() => showDocumentDescription(row)}>
-                    {row.attachmentName}
-                  </Button>
-                </Grid>
-                <Grid xs={12}>{row.reviewStatus === REVIEW_STATUS.COMPLETED ? 'Reviewed by expert' : 'Pending for Review'}</Grid>
-              </Grid>
-            </Grid>
-
+          <TableCell align='center' >
+            <Chip label={row.docType === "Product Requirement Document" ? 'PRD' : row.docType} size="small" variant="outlined" />
           </TableCell>
-          <TableCell >{row.docType}</TableCell>
-          <TableCell >{row.reviewStatus === REVIEW_STATUS.COMPLETED ? 'Completed' : 'In Progress'}</TableCell>
-          <TableCell align='right'>
+          <TableCell align='center'>{row.reviewStatus === REVIEW_STATUS.COMPLETED ?
+            <Chip label="Completed" color="success" />
+            : <Chip label='In Progress' color="primary" />
+          }</TableCell>
+          <TableCell align='center'>
             <Button
               variant="contained"
               sx={{ width: '12vw' }}
+              size="small"
               onClick={() => loadPdfwithReview(row.docId, row.expertDetails?.emailId)}
             >
               {row.reviewStatus === REVIEW_STATUS.COMPLETED ? 'View Feedback' : 'View Document'}
@@ -162,7 +157,7 @@ function HomePage() {
               {
                 error ?
                   <Alert severity="error">
-                    {error?.response?.data?.message || error?.message || GENERIC_ERROR }
+                    {error?.response?.data?.message || error?.message || GENERIC_ERROR}
                   </Alert> :
                   <Alert severity="info">
                     No data to display.
@@ -178,7 +173,7 @@ function HomePage() {
     <>
       <Box>
         <Typography variant="h4" ml={5} mt={2} mb={2} sx={{ fontWeight: 'bold' }}>
-          Home
+          Dashboard
         </Typography>
         <Box m={5} >
           <Box component="section" sx={{ border: '1px solid rgb(224, 224, 224)' }} p={3}>
@@ -212,13 +207,14 @@ function HomePage() {
                 label="Search"
                 id="outlined-start-adornment"
                 size='small'
-                sx={{ width: '25ch' }}
+                sx={{ width: '30ch' }}
                 value={searchQuery}
                 onChange={handleSearchChange}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#1976d2"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
                   </InputAdornment>,
+                  placeholder: 'Search By Document Name'
                 }}
               />
               <Button

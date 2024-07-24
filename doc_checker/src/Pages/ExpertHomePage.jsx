@@ -16,6 +16,8 @@ import useAxios from "../hooks/UseAxios.hook";
 import { DOCUMENT_TYPES, GENERIC_ERROR, REVIEW_STATUS } from "../Constants";
 import { formatDate } from "../utils";
 import { styled } from "@mui/material/styles";
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 
 const CustLabel = styled(Typography)({
   flexBasis: "10%",
@@ -31,14 +33,14 @@ const Item = styled(Typography)({
   textAlign: "left",
   fontSize: "16px",
 });
+
 const columns = [
-  "Id",
-  "User Name",
-  "Document Name",
-  `Type Of Document`,
-  "Status",
-  "Created Date",
-  "",
+  { colName: 'User Name', alignment: 'left' },
+  { colName: 'Document Name', alignment: 'left' },
+  { colName: 'Type Of Document', alignment: 'center' },
+  { colName: 'Status', alignment: 'center' },
+  { colName: 'Created Date', alignment: 'left' },
+  { colName: '', alignment: 'center' }
 ];
 
 function HomePage() {
@@ -109,43 +111,6 @@ function HomePage() {
           />
         </Grid>
       </Grid>
-
-      // <Stack direction="column" spacing={2}>
-      //   {/* {row?.docType !== DOCUMENT_TYPES.PRD.shortHand && (
-      //     <div>
-      //       <b>Experience: </b> {row.relevantExp}
-      //     </div>
-      //   )} */}
-      //   <div>
-      //     <Grid
-      //       container
-      //       xs={12}
-      //       direction="row"
-      //       justifyContent="flex-start"
-      //       alignItems="center"
-      //     >
-      //       <Grid item xs={12} md={6}>
-      //         Experience:
-      //       </Grid>
-      //       <Grid item xs={12} md={6}>
-      //         {row.relevantExp}
-      //       </Grid>
-      //       <Grid item xs={12} md={6}>
-      //         Reason for review:
-      //       </Grid>
-      //       <Grid item xs={12} md={6}>
-      //         {row.reasonForReview}
-      //       </Grid>
-      //     </Grid>
-      //   </div>
-      //   <iframe
-      //     title={row.attachmentName}
-      //     src={row.attachment}
-      //     width="100%"
-      //     height="700px"
-      //     style={{ border: "none" }}
-      //   />
-      // </Stack>
     );
     openModal();
   };
@@ -167,30 +132,31 @@ function HomePage() {
       filteredRows
         ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((row) => (
-          <TableRow key={row.docId} sx={{ height: 80 }}>
-            <TableCell>{row.docId}</TableCell>
+          <TableRow key={row.docId}>
             <TableCell>
               {row.userDetails?.firstname + " " + row.userDetails?.lastname}
             </TableCell>
             <TableCell>
-              <Button
-                sx={{ textTransform: "none" }}
+              <Link
+                component="button"
+                underline="none"
                 onClick={() => showDocumentDescription(row)}
               >
                 {row?.attachmentName}
-              </Button>
+              </Link>
             </TableCell>
-            <TableCell>{row.docType}</TableCell>
-            <TableCell>
+            <TableCell align="center">
+              <Chip label={row.docType === "Product Requirement Document" ? 'PRD' : row.docType} size="small" variant="outlined" /></TableCell>
+            <TableCell align="center">
               {row.reviewStatus === REVIEW_STATUS.COMPLETED
-                ? "Reviewed"
-                : "Pending"}
+                ? <Chip label="Reviewed" color="success" />
+                : <Chip label="Pending" color="primary" />}
             </TableCell>
             <TableCell>{formatDate(row.createdAt)}</TableCell>
-            <TableCell align="right">
+            <TableCell align="center">
               <Button
                 variant="contained"
-                sx={{ width: "12vw" }}
+                size="small"
                 onClick={() => loadPdfwithReview(row.docId)}
               >
                 {row.reviewStatus === REVIEW_STATUS.COMPLETED
@@ -209,7 +175,7 @@ function HomePage() {
             {
               error ?
                 <Alert severity="error">
-                  {error?.response?.data?.message || error?.message || GENERIC_ERROR }
+                  {error?.response?.data?.message || error?.message || GENERIC_ERROR}
                 </Alert> :
                 <Alert severity="info">
                   No data to display.
@@ -224,7 +190,7 @@ function HomePage() {
   return (
     <>
       <Typography variant="h4" ml={5} mt={2} mb={2} sx={{ fontWeight: "bold" }}>
-        Home
+        Dashboard
       </Typography>
       <Box m={5}>
         {loading ? (
@@ -243,7 +209,7 @@ function HomePage() {
                   label="Search"
                   id="outlined-start-adornment"
                   size="small"
-                  sx={{ width: "25ch" }}
+                  sx={{ width: "30ch" }}
                   value={searchQuery}
                   onChange={handleSearchChange}
                   InputProps={{
@@ -261,6 +227,7 @@ function HomePage() {
                         </svg>
                       </InputAdornment>
                     ),
+                    placeholder: 'Search By Document Name'
                   }}
                 />
               </Stack>

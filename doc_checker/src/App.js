@@ -30,7 +30,7 @@ const theme = createTheme();
 const MainContent = styled('div')(({ theme, shouldShowNavbar }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
-  marginTop: shouldShowNavbar ? theme.spacing(8) : 0, // Adjust for the height of the navbar
+  marginTop: shouldShowNavbar ? theme.spacing(8) : 0,
   marginLeft: shouldShowNavbar ? theme.spacing(3) : 0,
   [theme.breakpoints.down('sm')]: {
     marginTop: shouldShowNavbar ? theme.spacing(7) : 0,

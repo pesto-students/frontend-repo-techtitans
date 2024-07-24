@@ -12,7 +12,7 @@ import { TablePagination } from '@mui/material';
 
 export default function BasicTable({rows, columns, populateRows}) {
   const [page, pageChange] = React.useState(0)
-  const [rowsPerPage, rowsPerPageChange] = React.useState(5)
+  const [rowsPerPage, rowsPerPageChange] = React.useState(10)
 
   const handlePageChange = (event, newPage) => {
     pageChange(newPage)
@@ -28,10 +28,10 @@ export default function BasicTable({rows, columns, populateRows}) {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650, height: 80 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650}} aria-label="simple table" size='small'>
           <TableHead>
             <TableRow>
-              {columns?.map((col, idx) => <TableCell key={idx} sx={{fontWeight: 'bold'}}>{col}</TableCell>)}
+              {columns?.map((col, idx) => <TableCell key={idx} sx={{fontWeight: 'bold', width: col.width,}} align={col.alignment}>{col.colName}</TableCell>)}
             </TableRow>
           </TableHead>
           <TableBody>

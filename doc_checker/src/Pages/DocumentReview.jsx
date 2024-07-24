@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { ROLES } from "../Constants";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Tooltip from '@mui/material/Tooltip';
+import Link from '@mui/material/Link';
 // eslint-disable-next-line
 import { DisplayNotesSidebarOriginal } from "../components/DisplayNotesSidebarOriginal";
 
@@ -52,16 +53,14 @@ function DocumentReview() {
               alignItems="center"
               spacing={2}
             >
-              <Tooltip title="Go to Home" arrow>
-                <Button
-                  startIcon={<ArrowBackIcon />}
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                  onClick={navigateToHome}
-                >
-                </Button>
+              <Tooltip title="Back to Dashboard" arrow>
+                 <Link
+                component="button"
+                underline="none"
+                onClick={navigateToHome}
+              >
+                {<ArrowBackIcon />}
+              </Link>
               </Tooltip>
               <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                 Document Review

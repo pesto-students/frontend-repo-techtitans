@@ -129,8 +129,9 @@ const Navbar = () => {
               {user?.firstname?.charAt(0).toUpperCase()}
             </StyledAvatar>
           )}
-          
-          <Menu sx={{ mt: 1 }}
+
+          <Menu
+            sx={{ mt: 1, width: 160 }}
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
@@ -138,19 +139,19 @@ const Navbar = () => {
             {
               user.role !== ROLES.ADMIN &&
               <>
-                <MenuItem onClick={handleSettingsClick} >
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
+                <MenuItem onClick={handleSettingsClick}
+                  sx={{ height: 20 }}
+                >
+                  <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
                   <ListItemText primary="Settings" />
                 </MenuItem>
                 <Divider />
               </>
             }
-            <MenuItem onClick={handleLogoutClick}>
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
+            <MenuItem onClick={handleLogoutClick}
+              sx={{ height: 20 }}
+            >
+              <ExitToAppIcon fontSize="small" sx={{ mr: 1 }} />
               <ListItemText primary="Log out" />
             </MenuItem>
           </Menu>
